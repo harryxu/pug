@@ -26,7 +26,7 @@
       </h2>
       <form class="ui large form" role="form" method="POST" action="{{ url('/login') }}">
         {{ csrf_field() }}
-        
+
         @if(!$errors->isEmpty())
           <div class="ui error message" style="display: block;">
             <div class="list">
