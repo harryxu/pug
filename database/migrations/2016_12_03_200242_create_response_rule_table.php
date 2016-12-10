@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApiResponseTable extends Migration
+class CreateResponseRuleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateApiResponseTable extends Migration
      */
     public function up()
     {
-        Schema::create('api_response', function(Blueprint $table) {
+        Schema::create('response_rule', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('spec_id')->index();
-            $table->string('content_type')->nullable();
-            $table->integer('status_code');
-            $table->text('body');
+            $table->integer('response_id');
+
+            $table->text('rule');
+            $table->string('desc')->nullable();
+
+            $table->integer('order')->default(0);
 
             $table->timestamps();
         });
@@ -31,6 +34,6 @@ class CreateApiResponseTable extends Migration
      */
     public function down()
     {
-        Schema::drop('api_response');
+        Schema::drop('response_rule');
     }
 }
