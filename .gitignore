@@ -131,3 +131,5 @@ jspm_packages
 
 # Yarn Integrity file
 .yarn-integrity
+.phpstorm.meta.php
+_ide_helper.php

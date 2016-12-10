@@ -15,11 +15,12 @@ class CreateApiGroupTable extends Migration
     {
         Schema::create('api_group', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->index();
             $table->string('name');
             $table->string('desc')->nullable();
             $table->string('color', 20)->nullable();
             $table->string('icon')->nullable();
+            $table->integer('order')->default(0)->index();
         });
     }
 

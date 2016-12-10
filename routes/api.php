@@ -13,16 +13,3 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group([
-    'prefix' => 'pugapi',
-    'middleware' => 'auth:api',
-    'namespace' => 'Api'], function() {
-
-    Route::resource('/group', 'GroupController');
-
-});
-
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');

@@ -1,22 +1,22 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
-*/
 
+// main page
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('pug');
+})->middleware('auth');
 
 Auth::routes();
 
-Route::get('pug', function() {
-    return view('pug');
-})->middleware('auth');
+Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'auth'], function() {
+
+    Route::resource('group', 'GroupController', [
+        'only' => ['index', 'store', 'update', 'destory'],
+    ]);
+
+    Route::resource('spec', 'SpecController',[
+        'only' => ['index', 'store', 'update', 'destory'],
+    ]);
+
+});
+
