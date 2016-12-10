@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Bigecko\Pug\Http\Controllers\Auth;
 
-use App\User;
+use Bigecko\Pug\User;
 use Validator;
-use App\Http\Controllers\Controller;
+use Bigecko\Pug\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller

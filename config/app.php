@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => env('APP_NAME', 'Pug'),
 
     /*
     |--------------------------------------------------------------------------
@@ -172,11 +172,11 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        Bigecko\Pug\Providers\AppServiceProvider::class,
+        Bigecko\Pug\Providers\AuthServiceProvider::class,
+        // Bigecko\Pug\Providers\BroadcastServiceProvider::class,
+        Bigecko\Pug\Providers\EventServiceProvider::class,
+        Bigecko\Pug\Providers\RouteServiceProvider::class,
 
     ],
 

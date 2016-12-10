@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Bigecko\Pug\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
