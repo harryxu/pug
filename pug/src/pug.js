@@ -1,5 +1,3 @@
-import 'babel-polyfill'
-
 import React from 'react'
 import { render } from 'react-dom'
 
@@ -9,6 +7,9 @@ import { browserHistory, Router } from 'react-router'
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
 
 import thunk from 'redux-thunk'
+
+require('../sass/splitpane.scss')
+require('../sass/style.scss')
 
 // app modules
 import rootReducer from './reducers'

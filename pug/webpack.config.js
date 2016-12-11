@@ -74,12 +74,12 @@ var config = {
             : './src/pug',
 
         vendor: [
-            'babel-polyfill',
             'react',
             'react-dom',
             'redux',
             'redux-thunk',
-            'react-redux'
+            'react-redux',
+            'react-split-pane'
         ]
     },
 
