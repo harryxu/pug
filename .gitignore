@@ -6,6 +6,11 @@ Homestead.json
 Homestead.yaml
 .env
 
+.phpstorm.meta.php
+_ide_helper.php
+
+/pug/proxy.js
+
 
 # Created by https://www.gitignore.io/api/osx,windows,linux,vim,node
 
@@ -131,5 +136,3 @@ jspm_packages
 
 # Yarn Integrity file
 .yarn-integrity
-.phpstorm.meta.php
-_ide_helper.php
