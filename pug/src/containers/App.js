@@ -9,7 +9,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                 <Menu className="appmenu">
+                 <Menu className="appmenu" fixed="top" inverted="true">
                     <Menu.Item header>Pug</Menu.Item>
                 </Menu>
                 <div className="root-pane">
