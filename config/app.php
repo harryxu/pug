@@ -178,6 +178,8 @@ return [
         Bigecko\Pug\Providers\EventServiceProvider::class,
         Bigecko\Pug\Providers\RouteServiceProvider::class,
 
+
+        \Conner\Tagging\Providers\TaggingServiceProvider::class,
     ],
 
     /*

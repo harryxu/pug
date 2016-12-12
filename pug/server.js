@@ -8,7 +8,9 @@ new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,
     contentBase: path.join(__dirname, '../public'),
     hot: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+        index: 'dev.html'
+    },
     proxy: {
         '/api/*': {
             target: require('./proxy'),
@@ -20,5 +22,5 @@ new WebpackDevServer(webpack(config), {
             return console.log(err);
         }
 
-        console.log('Listening at http://localhost:8019/');
+        console.log('Please go http://localhost:8019/dev.html');
     });
