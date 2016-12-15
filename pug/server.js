@@ -12,9 +12,19 @@ new WebpackDevServer(webpack(config), {
         index: 'dev.html'
     },
     proxy: {
-        '/api/*': {
+        '/webapi/*': {
             target: require('./proxy'),
             secure: false
+        },
+
+        '/postlogin': {
+            target: require('./proxy'),
+            pathRewrite: {'^/postlogin' : 'login'}
+        },
+
+        '/devlogout': {
+            target: require('./proxy'),
+            pathRewrite: {'^/devlogout' : 'logout'}
         }
     }
 }).listen(8019, 'localhost', function (err, result) {

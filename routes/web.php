@@ -8,6 +8,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('logout', 'Auth\LoginController@logout');
+
 Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'auth'], function() {
 
     Route::resource('group', 'GroupController', [
@@ -20,3 +22,7 @@ Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'au
 
 });
 
+Route::get('webapi/scripts', function() {
+    $csrfToken = csrf_token();
+    return "var csrfToken = '$csrfToken';";
+});

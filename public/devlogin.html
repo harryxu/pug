@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+</head>
+<body>
+
+<form class="ui large form" role="form" method="POST" action="/postlogin">
+  <input id="csrftoken" type="hidden" name="_token">
+
+  <input id="username" type="text" name="username" value="" placeholder="Username" required autofocus>
+  <input id="password" type="password" placeholder="Pasword" name="password" required>
+  <button type="submit">Login</button>
+</form>
+
+<a href="/devlogout">Logout</a>
+
+<script src="http://localhost:8019/webapi/scripts"></script>
+
+<script>
+  document.getElementById('csrftoken').value = csrfToken;
+</script>
+
+</body>
+</html>
+

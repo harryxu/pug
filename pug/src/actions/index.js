@@ -6,12 +6,12 @@ export function loadApiGroups() {
     return (dispatch, getState) => {
         return fetch(apiUrl('group'))
             .then(response => {
-                dispatch(receiveGroup(response.json()))
+                dispatch(receiveApiGroups(response.json()))
             })
     }
 }
 
-export function receiveGroup(data) {
+export function receiveApiGroups(data) {
     return {
         type: LOAD_API_GROUPS,
         fetching: false,
