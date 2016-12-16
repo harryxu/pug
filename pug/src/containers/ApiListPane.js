@@ -1,12 +1,34 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 
-class ApiListPane extends React.Comment {
+import { loadApiGroups } from '../actions'
 
+class ApiListPane extends Component {
 
+    componentDidMount() {
+        this.loadGropus()
+    }
+
+    loadGropus() {
+        this.props.dispatch(loadApiGroups())
+    }
 
     render() {
+
+        const {apiGroups} = this.props
+
         return (
             <div>
+                <div className="api-groups-list">
+                {apiGroups.ready
+                    ? <ul>
+                        {apiGroups.groups.map((group, i) =>
+                            <li key={i}>{group.name}</li>
+                        )}
+                    </ul>
+                    : 'Loading groups...'
+                }
+                </div>
 
             </div>
         )
@@ -15,7 +37,7 @@ class ApiListPane extends React.Comment {
 
 function mapStateToProps(state) {
     return {
-        groups: state.groups
+        apiGroups: state.apiGroups
     }
 }
 

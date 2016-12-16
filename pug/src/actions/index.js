@@ -1,12 +1,21 @@
-import { fetch, path, apiUrl } from '../helper'
+import { webfetch, path, apiUrl } from '../helper'
 
 export const LOAD_API_GROUPS = 'LOAD_API_GROUPS'
 
 export function loadApiGroups() {
     return (dispatch, getState) => {
-        return fetch(apiUrl('group'))
+
+        dispatch({
+            type: LOAD_API_GROUPS,
+            ready: false
+        })
+
+        return webfetch(apiUrl('group'))
             .then(response => {
-                dispatch(receiveApiGroups(response.json()))
+                return response.json()
+            })
+            .then(json => {
+                dispatch(receiveApiGroups(json))
             })
     }
 }
@@ -14,7 +23,7 @@ export function loadApiGroups() {
 export function receiveApiGroups(data) {
     return {
         type: LOAD_API_GROUPS,
-        fetching: false,
+        ready: true,
         data
     }
 }

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { Menu } from 'semantic-ui-react'
 import SplitPane from 'react-split-pane'
 
+import ApiListPane from './ApiListPane'
+
 class App extends Component {
 
     render() {
@@ -14,7 +16,9 @@ class App extends Component {
                 </Menu>
                 <div className="root-pane">
                     <SplitPane split="vertical" minSize={150} defaultSize={300}>
-                        <div></div>
+                        <div>
+                            <ApiListPane/>
+                        </div>
                         <div></div>
                     </SplitPane>
                 </div>

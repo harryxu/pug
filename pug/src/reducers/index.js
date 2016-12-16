@@ -5,12 +5,12 @@ import * as actions from '../actions'
 
 function apiGroups(state = [], action) {
     if (action.type != actions.LOAD_API_GROUPS) {
-        return
+        return state
     }
 
     var data = {
-        groups: action.fetching ? action.data : [],
-        fetching: action.fetching || false,
+        groups: action.ready ? action.data : [],
+        ready: action.ready
     }
 
     return Object.assign({}, state, data)

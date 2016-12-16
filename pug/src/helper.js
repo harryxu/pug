@@ -1,11 +1,11 @@
-import {fetch as fetchApi} from 'whatwg-fetch'
+import 'whatwg-fetch'
 
-function fetch(input, init) {
+export function webfetch(input, init) {
     init = init || {};
     init = Object.assign(init, {
         credentials: 'same-origin'
     })
-    return fetchApi(input, init);
+    return fetch(input, init);
 }
 
 
