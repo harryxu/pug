@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import { Accordion } from 'semantic-ui-react'
+
 import { loadApiGroups } from '../actions'
 
 class ApiListPane extends Component {
@@ -13,23 +15,31 @@ class ApiListPane extends Component {
         this.props.dispatch(loadApiGroups())
     }
 
-    render() {
+    renderApiGroups() {
 
         const {apiGroups} = this.props
 
-        return (
-            <div>
-                <div className="api-groups-list">
+        const panels = apiGroups.groups.map((group, i) => ({
+            title: group.name,
+            content: <div>apis there</div>
+        }))
+
+        return(
+            <div className="api-groups-list">
                 {apiGroups.ready
-                    ? <ul>
-                        {apiGroups.groups.map((group, i) =>
-                            <li key={i}>{group.name}</li>
-                        )}
-                    </ul>
+                    ? <Accordion panels={panels} exclusive={false} fluid styled />
                     : 'Loading groups...'
                 }
-                </div>
+            </div>
+        )
+    }
 
+    render() {
+
+
+        return (
+            <div>
+                {this.renderApiGroups()}
             </div>
         )
     }
