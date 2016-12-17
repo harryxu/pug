@@ -21,6 +21,7 @@ class CreateApiGroupTable extends Migration
             $table->string('color', 20)->nullable();
             $table->string('icon')->nullable();
             $table->integer('order')->default(0)->index();
+            $table->timestamps();
         });
     }
 

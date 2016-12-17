@@ -1,3 +1,17 @@
+html {
+  font-size: 16px;
+}
+
+// common UIs
+
+.icon-btn {
+  color: #6d6d6d;
+  cursor: pointer;
+  &:hover {
+    color: #0090da;
+  }
+}
+
 .ui.menu.appmenu {
   margin-bottom: 0;
   background: #1b5988;
@@ -9,4 +23,34 @@
   height: 100vh;
   width: 100vw;
   margin-top: 60px;
+}
+
+.api-list-pane {
+
+  .toolbar {
+    background: #efefef;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+
+    .btn-add-group {
+      float: right;
+      margin-left: auto;
+    }
+  }
+
+  .api-groups-list {
+
+    .ui.styled.accordion {
+      border-radius: 0;
+
+      .title.active {
+        border-bottom: 1px solid #dedede;
+        box-shadow: 0px 1px 4px 0 rgba(34,36,38,.15);
+        background: #efefef;
+      }
+    }
+
+  }
 }

@@ -9,6 +9,6 @@ class ApiGroup extends Model
 
     protected $table = 'api_group';
 
-    protected $fillable = ['user_id', 'name', 'desc', 'color', 'icon'];
+    protected $fillable = ['name', 'desc', 'color', 'icon'];
 
 }

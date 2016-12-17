@@ -14,4 +14,14 @@ class GroupController extends Controller
             ->orderBy('order', 'desc')
             ->get();
     }
+
+    public function store(Request $request)
+    {
+        $group = new ApiGroup($request->all());
+        $group->user_id = $request->user()->id;
+
+        $group->save();
+
+        return $group;
+    }
 }

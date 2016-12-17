@@ -1,11 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { Accordion } from 'semantic-ui-react'
+import { Accordion, Icon, Modal, Button } from 'semantic-ui-react'
 
-import { loadApiGroups } from '../actions'
+import { loadApiGroups, createApiGroup } from '../actions'
+import ApiGroupForm from '../components/ApiGroupForm'
 
 class ApiListPane extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            showGroupForm: false
+        }
+    }
 
     componentDidMount() {
         this.loadGropus()
@@ -34,12 +42,43 @@ class ApiListPane extends Component {
         )
     }
 
+    openGroupForm() {
+        this.setState({showGroupForm: true})
+    }
+
+    closeGroupForm() {
+        this.setState({showGroupForm: false})
+    }
+
+    handleGroupFormSubmit(data) {
+        this.props.dispatch(createApiGroup(data))
+    }
+
+    renderApiGroupForm() {
+        return (
+            <Modal open={this.state.showGroupForm}>
+                <Modal.Header>Create Api Group</Modal.Header>
+                <Modal.Content>
+                    <ApiGroupForm onCancel={this.closeGroupForm.bind(this)}
+                                  onSubmit={this.handleGroupFormSubmit.bind(this)}
+                    />
+                </Modal.Content>
+            </Modal>
+        )
+    }
+
     render() {
 
-
         return (
-            <div>
+            <div className="api-list-pane">
+                <div className="toolbar">
+                    <Icon name="plus" size="big" title="New group"
+                          className="square outline icon-btn btn-add-group"
+                          onClick={this.openGroupForm.bind(this)}
+                    />
+                </div>
                 {this.renderApiGroups()}
+                {this.renderApiGroupForm()}
             </div>
         )
     }
