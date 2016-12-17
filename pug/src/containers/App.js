@@ -9,13 +9,18 @@ import ApiListPane from './ApiListPane'
 class App extends Component {
 
     render() {
+        const paneStyle = {
+            position: 'static'
+        }
+
         return (
-            <div>
-                 <Menu className="appmenu" fixed="top" inverted={true}>
-                    <Menu.Item header>Pug</Menu.Item>
-                </Menu>
-                <div className="root-pane">
-                    <SplitPane split="vertical" minSize={150} defaultSize={300}>
+            <div className="root">
+                <div className="wrapper">
+                    <Menu className="appmenu" inverted={true}>
+                        <Menu.Item header>Pug</Menu.Item>
+                    </Menu>
+
+                    <SplitPane style={paneStyle} split="vertical" minSize={150} defaultSize={300}>
                         <div>
                             <ApiListPane/>
                         </div>

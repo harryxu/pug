@@ -28,10 +28,15 @@ function apiGroupRequest(state = {pending: false}, action) {
     }
 }
 
+function apiSpecs(state = {}, action) {
+    return state;
+}
+
 const rootReducer = combineReducers({
     apiGroups,
+    apiGroupRequest,
+    apiSpecs,
     routing,
-    apiGroupRequest
 })
 
 export default rootReducer
