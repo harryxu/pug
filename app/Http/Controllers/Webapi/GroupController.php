@@ -17,6 +17,7 @@ class GroupController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, ['name' => 'required']);
         $group = new ApiGroup($request->all());
         $group->user_id = $request->user()->id;
 

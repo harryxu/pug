@@ -16,7 +16,11 @@ import rootReducer from './reducers'
 import routes from './routes'
 
 var initState = {
-    apiGroups: {groups:[]}
+    apiGroups: {groups:[]},
+    apiGroupRequest: {
+        pending: false,
+        data: {}
+    }
 }
 
 const store = createStore(

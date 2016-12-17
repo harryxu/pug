@@ -29,11 +29,30 @@ export function receiveApiGroups(data) {
     }
 }
 
+/**
+ * Create a new api group.
+ *
+ * @param data
+ * @returns {function(*, *)}
+ */
 export function createApiGroup(data) {
     return (dispatch, getState) => {
+        dispatch({
+            type: CREATE_API_GROUP,
+            pending: true
+        })
         return webfetch(apiUrl('group'), {
             method: 'post',
             body: createFormData(data)
         })
+            .then(response => { return response.json() })
+            .then(json => {
+                dispatch(loadApiGroups())
+                dispatch({
+                    type: CREATE_API_GROUP,
+                    pending: false,
+                    data: json
+                })
+            })
     }
 }

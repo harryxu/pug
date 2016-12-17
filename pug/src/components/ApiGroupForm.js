@@ -19,7 +19,7 @@ export default class ApiGroupForm extends Component {
 
     render() {
         return (
-            <Form onSubmit={this.handleSubmit.bind(this)}>
+            <Form loading={this.props.loading} onSubmit={this.handleSubmit.bind(this)}>
                 <Form.Input name="name" autoFocus label="Name" placeholder="Group Name" />
                 <Form.TextArea name="desc" label="Description" placeholder="Description" />
 

@@ -19,6 +19,13 @@ class ApiListPane extends Component {
         this.loadGropus()
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.apiGroupRequest.pending) {
+            this.setState({showGroupForm: false})
+        }
+    }
+
+
     loadGropus() {
         this.props.dispatch(loadApiGroups())
     }
@@ -34,7 +41,7 @@ class ApiListPane extends Component {
 
         return(
             <div className="api-groups-list">
-                {apiGroups.ready
+                {apiGroups.ready || apiGroups.groups.length > 0
                     ? <Accordion panels={panels} exclusive={false} fluid styled />
                     : 'Loading groups...'
                 }
@@ -50,6 +57,11 @@ class ApiListPane extends Component {
         this.setState({showGroupForm: false})
     }
 
+    /**
+     * Dispatch create api group action
+     *
+     * @param data
+     */
     handleGroupFormSubmit(data) {
         this.props.dispatch(createApiGroup(data))
     }
@@ -61,6 +73,7 @@ class ApiListPane extends Component {
                 <Modal.Content>
                     <ApiGroupForm onCancel={this.closeGroupForm.bind(this)}
                                   onSubmit={this.handleGroupFormSubmit.bind(this)}
+                                  loading={this.props.apiGroupRequest.pending}
                     />
                 </Modal.Content>
             </Modal>
@@ -86,7 +99,8 @@ class ApiListPane extends Component {
 
 function mapStateToProps(state) {
     return {
-        apiGroups: state.apiGroups
+        apiGroups: state.apiGroups,
+        apiGroupRequest: state.apiGroupRequest
     }
 }
 
