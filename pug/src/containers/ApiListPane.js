@@ -30,19 +30,38 @@ class ApiListPane extends Component {
         this.props.dispatch(loadApiGroups())
     }
 
+    handleNewApiClick(group = null) {
+        console.log('create api in group', group)
+    }
+
     renderApiGroups() {
 
         const {apiGroups} = this.props
 
-        const panels = apiGroups.groups.map((group, i) => ({
-            title: group.name,
-            content: <div>apis there</div>
-        }))
+        const panels = [];
+        apiGroups.groups.forEach(function(group, i) {
+            panels.push(<Accordion.Title key={`title-${i}`}>
+                <Icon name='dropdown' />
+                {group.name}
+                <div className="btns">
+                    <Icon name="add" className="icon-btn"
+                          onClick={event => {
+                              event.stopPropagation()
+                              this.handleNewApiClick(group)
+                          }} />
+                </div>
+            </Accordion.Title>)
+            panels.push(<Accordion.Content key={`content-${i}`}>xxx</Accordion.Content>)
+        }.bind(this))
 
         return(
             <div className="api-groups-list">
                 {apiGroups.ready || apiGroups.groups.length > 0
-                    ? <Accordion panels={panels} exclusive={false} fluid styled />
+                    ? (
+                        <Accordion exclusive={false} fluid styled >
+                            {panels}
+                        </Accordion>
+                      )
                     : 'Loading groups...'
                 }
             </div>

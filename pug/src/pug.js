@@ -20,7 +20,9 @@ var initState = {
     apiGroupRequest: {
         pending: false,
         data: {}
-    }
+    },
+
+    apiSpecs: {}
 }
 
 const store = createStore(
