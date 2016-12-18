@@ -19,6 +19,7 @@ function apiGroups(state = {groups: []}, action) {
 function apiGroupRequest(state = {pending: false}, action) {
     switch (action.type) {
         case actions.CREATE_API_GROUP:
+        case actions.UPDATE_API_GROUP:
             return Object.assign({}, state, {
                 pending: action.pending,
                 data: action.busy ? {} : action.data

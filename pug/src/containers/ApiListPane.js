@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { Accordion, Icon, Modal, Button } from 'semantic-ui-react'
 
-import { loadApiGroups, createApiGroup } from '../actions'
+import { loadApiGroups, createApiGroup, updateApiGroup } from '../actions'
 import ApiGroupForm from '../components/ApiGroupForm'
 
 class ApiListPane extends Component {
@@ -11,7 +11,8 @@ class ApiListPane extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showGroupForm: false
+            showGroupForm: false,
+            editGroup: null
         }
     }
 
@@ -44,11 +45,18 @@ class ApiListPane extends Component {
                 <Icon name='dropdown' />
                 {group.name}
                 <div className="btns">
-                    <Icon name="add" className="icon-btn"
+                    <Icon name="edit" className="icon-btn" title="Edit"
+                          onClick={event => {
+                              event.stopPropagation()
+                              this.openGroupForm(group)
+                          }}
+                    />
+                    <Icon name="add" className="icon-btn" title="Add New API"
                           onClick={event => {
                               event.stopPropagation()
                               this.handleNewApiClick(group)
-                          }} />
+                          }}
+                    />
                 </div>
             </Accordion.Title>)
             panels.push(<Accordion.Content key={`content-${i}`}>xxx</Accordion.Content>)
@@ -68,8 +76,11 @@ class ApiListPane extends Component {
         )
     }
 
-    openGroupForm() {
-        this.setState({showGroupForm: true})
+    openGroupForm(edit = null) {
+        this.setState({
+            showGroupForm: true,
+            editGroup: edit
+        })
     }
 
     closeGroupForm() {
@@ -77,12 +88,17 @@ class ApiListPane extends Component {
     }
 
     /**
-     * Dispatch create api group action
+     * Dispatch api group create/update action.
      *
      * @param data
      */
     handleGroupFormSubmit(data) {
-        this.props.dispatch(createApiGroup(data))
+        if (data.id) {
+            this.props.dispatch(updateApiGroup(data))
+        }
+        else {
+            this.props.dispatch(createApiGroup(data))
+        }
     }
 
     renderApiGroupForm() {
@@ -93,6 +109,7 @@ class ApiListPane extends Component {
                     <ApiGroupForm onCancel={this.closeGroupForm.bind(this)}
                                   onSubmit={this.handleGroupFormSubmit.bind(this)}
                                   loading={this.props.apiGroupRequest.pending}
+                                  edit={this.state.editGroup}
                     />
                 </Modal.Content>
             </Modal>

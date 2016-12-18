@@ -25,4 +25,12 @@ class GroupController extends Controller
 
         return $group;
     }
+
+    public function update(ApiGroup $group, Request $request)
+    {
+        $this->validate($request, ['name' => 'required']);
+        $group->update($request->all());
+
+        return $group;
+    }
 }
