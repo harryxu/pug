@@ -20,7 +20,7 @@ class App extends Component {
                         <Menu.Item header>Pug</Menu.Item>
                     </Menu>
 
-                    <SplitPane style={paneStyle} split="vertical" minSize={150} defaultSize={300}>
+                    <SplitPane style={paneStyle} split="vertical" minSize={150} defaultSize={260}>
                         <div>
                             <ApiListPane/>
                         </div>

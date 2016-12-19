@@ -10,6 +10,9 @@ import { path } from './helper'
 export default (
     <Route path={path()} component={App}>
         <IndexRoute component={ApiSpecPane} />
+
+
+
     </Route>
 )
 

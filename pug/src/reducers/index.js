@@ -33,10 +33,15 @@ function apiSpecs(state = {}, action) {
     return state;
 }
 
+function globalConfig(state = {}, action) {
+    return state
+}
+
 const rootReducer = combineReducers({
     apiGroups,
     apiGroupRequest,
     apiSpecs,
+    globalConfig,
     routing,
 })
 

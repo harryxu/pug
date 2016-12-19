@@ -22,7 +22,12 @@ var initState = {
         data: {}
     },
 
-    apiSpecs: {}
+    apiSpecs: {},
+
+    globalConfig: {
+        basePath: window.basePath,
+        baseUrl: window.baseUrl
+    }
 }
 
 const store = createStore(

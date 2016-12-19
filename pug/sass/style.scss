@@ -81,3 +81,50 @@ html {
 
   }
 }
+
+.api-spec-pane {
+  padding: 10px;
+
+  .request-info {
+    display: inline-block;
+    .spec-field {
+      float: left;
+      margin: 0;
+      height: 36px;
+      border-radius: 0;
+    }
+
+    .verb-select {
+      width: 90px;
+      .Select {
+        &:focus { outline: none; }
+        .Select-control {
+          border-radius: 0;
+          border-right: none;
+        }
+      }
+    }
+    .base-path {
+      font-family: monospace;
+      padding: 8px 3px;
+      border: 1px solid #ccc;;
+      border-right: none;
+      box-shadow: none;
+    }
+    .ui.input.path-input input {
+      font-family: monospace;
+      border: 1px solid #ccc;;
+      border-left: none;
+      border-radius: 0;
+      box-shadow: none;
+      width: 300px;
+      box-sizing: border-box;
+      height: 36px;
+      padding-left: 5px;
+    }
+  }
+
+  .name-input, .btn-save {
+    margin-left: 10px;
+  }
+}
