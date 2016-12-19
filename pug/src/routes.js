@@ -11,6 +11,7 @@ export default (
     <Route path={path()} component={App}>
         <IndexRoute component={ApiSpecPane} />
 
+        <Route path={path('b/newspec')} component={ApiSpecPane} />
 
 
     </Route>

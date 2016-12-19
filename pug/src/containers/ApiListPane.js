@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
 import { Accordion, Icon, Modal, Button } from 'semantic-ui-react'
 
@@ -33,6 +34,11 @@ class ApiListPane extends Component {
 
     handleNewApiClick(group = null) {
         console.log('create api in group', group)
+        var path = '/b/newspec';
+        if (group) {
+            path += `?gid=${group.id}`
+        }
+        this.props.dispatch(push(path))
     }
 
     renderApiGroups() {
