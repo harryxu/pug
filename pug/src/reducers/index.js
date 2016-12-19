@@ -22,7 +22,20 @@ function apiGroupRequest(state = {pending: false}, action) {
         case actions.UPDATE_API_GROUP:
             return Object.assign({}, state, {
                 pending: action.pending,
-                data: action.busy ? {} : action.data
+                data: action.pending ? {} : action.data
+            })
+        default:
+            return state
+    }
+}
+
+function activeApiSpec(state={pending: false}, action) {
+    switch (action.type) {
+        case actions.CREATE_API_SPEC:
+        case actions.UPDATE_API_SPEC:
+            return Object.assign({}, state, {
+                pending: action.pending,
+                data: action.pending ? {} : action.data
             })
         default:
             return state
@@ -41,6 +54,7 @@ const rootReducer = combineReducers({
     apiGroups,
     apiGroupRequest,
     apiSpecs,
+    activeApiSpec,
     globalConfig,
     routing,
 })

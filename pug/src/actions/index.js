@@ -4,9 +4,16 @@ export const LOAD_API_GROUPS = 'LOAD_API_GROUPS'
 export const CREATE_API_GROUP = 'CREATE_API_GROUP'
 export const UPDATE_API_GROUP = 'UPDATE_API_GROUP'
 
+export const CREATE_API_SPEC = 'CREATE_API_SPEC'
+export const UPDATE_API_SPEC = 'UPDATE_API_SPEC'
+
+
+//
+//      API Group
+//
+
 export function loadApiGroups() {
     return (dispatch, getState) => {
-
         dispatch({
             type: LOAD_API_GROUPS,
             ready: false
@@ -30,52 +37,58 @@ export function receiveApiGroups(data) {
     }
 }
 
-/**
- * Create a new api group.
- *
- * @param data
- * @returns {function(*, *)}
- */
 export function createApiGroup(data) {
-    return (dispatch, getState) => {
-        dispatch({
-            type: CREATE_API_GROUP,
-            pending: true
-        })
-        return webfetch(apiUrl('group'), {
-            method: 'POST',
-            body: createFormData(data)
-        })
-            .then(response => { return response.json() })
-            .then(json => {
-                dispatch(loadApiGroups())
-                dispatch({
-                    type: CREATE_API_GROUP,
-                    pending: false,
-                    data: json
-                })
-            })
-    }
+    return commonWrite('group', CREATE_API_GROUP, data);
 }
 
 export function updateApiGroup(data) {
+    return commonWrite(`group/${data.id}`, UPDATE_API_GROUP, data, 'PUT',
+        (p, dispatch) => p.then(() => dispatch(loadApiGroups())))
+}
+
+//
+//      API Spec
+//
+
+export function createApiSpec(data) {
+    return commonWrite('spec', CREATE_API_SPEC, data);
+}
+
+export function updateApiSpec(data) {
+    return commonWrite(`spec/${data.id}`, UPDATE_API_SPEC, data, 'PUT');
+}
+
+
+/**
+ * Call write webapi for common create or update use.
+ *
+ * @param path
+ * @param actionType
+ * @param data
+ * @param method
+ * @param middleware
+ * @returns {function(*, *)}
+ */
+export function commonWrite(path, actionType, data, method='POST', middleware = p=>p) {
     return (dispatch, getState) => {
         dispatch({
-            type: UPDATE_API_GROUP,
+            type: actionType,
             pending: true
         })
-        return webfetch(apiUrl(`group/${data.id}`), {
-            method: 'PUT',
-            body: createFormData(data)
-        })
+
+        var p = webfetch(apiUrl(path), {
+                method,
+                body: createFormData(data)
+            })
             .then(response => { return response.json() })
             .then(json => {
-                dispatch(loadApiGroups())
-                dispatch({
-                    type: UPDATE_API_GROUP,
+                return dispatch({
+                    type: actionType,
                     pending: false,
                     data: json
                 })
             })
+        return middleware(p, dispatch, getState)
     }
 }
+

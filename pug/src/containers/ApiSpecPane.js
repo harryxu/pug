@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
+import { Form, Button } from 'semantic-ui-react'
 
-import { Button } from 'semantic-ui-react'
+import { createApiSpec, updateApiSpec } from '../actions'
 
 class ApiSpecPane extends Component {
 
@@ -22,15 +23,28 @@ class ApiSpecPane extends Component {
         })
     }
 
+    handleSaveSpec(event, data) {
+        event.preventDefault()
+        const spec = this.props.spec.data
+        if (spec.id) {
+            var formData = data.formData
+            formData.id = spec.id
+            this.props.dispatch(updateApiSpec(data.formData))
+        }
+        else {
+            this.props.dispatch(createApiSpec(data.formData))
+        }
+    }
 
     renderSpecSetting() {
 
         return (
-            <div className="api-box spec-setting">
+            <Form className="api-box spec-setting" onSubmit={this.handleSaveSpec.bind(this)}>
 
                 <div className="request-info">
                     <div className="verb-select spec-field">
-                        <Select name="verb" options={this.verbs} value={this.state.requestVerb}
+                        <Select name="method" searchable={false}
+                                options={this.verbs} value={this.state.requestVerb}
                                 clearable={false} onChange={this.updateVerb.bind(this)}/>
                     </div>
 
@@ -47,8 +61,8 @@ class ApiSpecPane extends Component {
                     <input type="text" name="name" placeholder="Request Name" />
                 </div>
 
-                <Button className="btn-save" primary size="mini">Save</Button>
-            </div>
+                <Button className="btn-save" loading={this.props.spec.pending} primary size="mini">Save</Button>
+            </Form>
         )
     }
 
@@ -63,7 +77,8 @@ class ApiSpecPane extends Component {
 
 function mapStateToProps(state) {
     return {
-        globalConfig: state.globalConfig
+        globalConfig: state.globalConfig,
+        spec: state.activeApiSpec
     }
 }
 

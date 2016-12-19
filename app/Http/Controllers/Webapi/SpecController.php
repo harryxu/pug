@@ -23,4 +23,33 @@ class SpecController extends Controller
 
         return $query->orderBy('order', 'desc')->get();
     }
+
+    public function store(Request $request)
+    {
+        $this->validateSpec($request);
+
+        $spec = new ApiSpec($request->all());
+        $spec->user_id = $request->user()->id;
+        $spec->save();
+
+        return $spec;
+    }
+
+    public function update(ApiSpec $spec, Request $request)
+    {
+        $this->validateSpec($request);
+
+        $spec->update($request->all());
+
+        return $spec;
+    }
+
+    protected function validateSpec(Request $request)
+    {
+        $this->validate($request, [
+            'path' => 'required',
+            'name' => 'required',
+            'method' => 'required'
+        ]);
+    }
 }

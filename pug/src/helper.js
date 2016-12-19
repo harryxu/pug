@@ -1,7 +1,6 @@
 import 'whatwg-fetch'
 
 export function webfetch(input, init) {
-    console.log(input)
     init = init || {};
     init = Object.assign(init, {
         credentials: 'same-origin'

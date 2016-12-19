@@ -17,7 +17,15 @@ import routes from './routes'
 
 var initState = {
     apiGroups: {groups:[]},
+
+    // Current working api group request.
     apiGroupRequest: {
+        pending: false,
+        data: {}
+    },
+
+    // Current active api spec
+    activeApiSpec: {
         pending: false,
         data: {}
     },
