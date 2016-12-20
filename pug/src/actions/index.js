@@ -38,7 +38,9 @@ export function receiveApiGroups(data) {
 }
 
 export function createApiGroup(data) {
-    return commonWrite('group', CREATE_API_GROUP, data);
+    return commonWrite('group', CREATE_API_GROUP, data, 'POST',
+        (p, dispatch) => p.then(() => dispatch(loadApiGroups())))
+
 }
 
 export function updateApiGroup(data) {

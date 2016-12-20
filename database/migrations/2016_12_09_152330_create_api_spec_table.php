@@ -22,7 +22,7 @@ class CreateApiSpecTable extends Migration
             $table->string('desc')->nullable();
             $table->string('method')->nullable()->comment('request method');
 
-            $table->integer('default_response_id');
+            $table->integer('default_response_id')->nullable()->default(0);
             $table->integer('order')->default(0)->index();
 
             $table->timestamps();

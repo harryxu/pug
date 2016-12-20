@@ -25,13 +25,19 @@ class ApiSpecPane extends Component {
 
     handleSaveSpec(event, data) {
         event.preventDefault()
-        const spec = this.props.spec.data
+
+        var formData = data.formData
+        var spec = this.props.spec.data
+
         if (spec.id) {
-            var formData = data.formData
             formData.id = spec.id
             this.props.dispatch(updateApiSpec(data.formData))
         }
         else {
+            if (this.props.location.query.gid) {
+                formData.group_id = this.props.location.query.gid
+            }
+
             this.props.dispatch(createApiSpec(data.formData))
         }
     }
