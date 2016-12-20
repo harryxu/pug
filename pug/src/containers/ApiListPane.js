@@ -6,6 +6,7 @@ import { Accordion, Icon, Modal, Button } from 'semantic-ui-react'
 
 import { loadApiGroups, createApiGroup, updateApiGroup } from '../actions'
 import ApiGroupForm from '../components/ApiGroupForm'
+import ApiSpecList from '../containers/ApiSpecList'
 
 class ApiListPane extends Component {
 
@@ -41,31 +42,45 @@ class ApiListPane extends Component {
         this.props.dispatch(push(path))
     }
 
+    handleGroupTitleClick(event, index, titleProps) {
+        var prevActive = event.target.classList.contains('active')
+
+    }
+
     renderApiGroups() {
 
         const {apiGroups} = this.props
 
         const panels = [];
         apiGroups.groups.forEach(function(group, i) {
-            panels.push(<Accordion.Title key={`title-${i}`}>
-                <Icon name='dropdown' />
-                {group.name}
-                <div className="btns">
-                    <Icon name="edit" className="icon-btn" title="Edit"
-                          onClick={event => {
-                              event.stopPropagation()
-                              this.openGroupForm(group)
-                          }}
-                    />
-                    <Icon name="add" className="icon-btn" title="Add New API"
-                          onClick={event => {
-                              event.stopPropagation()
-                              this.handleNewApiClick(group)
-                          }}
-                    />
-                </div>
-            </Accordion.Title>)
-            panels.push(<Accordion.Content key={`content-${i}`}>xxx</Accordion.Content>)
+            // Pane title
+            panels.push(
+                <Accordion.Title key={`title-${i}`} onClick={this.handleGroupTitleClick}>
+                    <Icon name='dropdown' />
+                    {group.name}
+                    <div className="btns">
+                        <Icon name="edit" className="icon-btn" title="Edit"
+                              onClick={event => {
+                                  event.stopPropagation()
+                                  this.openGroupForm(group)
+                              }}
+                        />
+                        <Icon name="add" className="icon-btn" title="Add New API"
+                              onClick={event => {
+                                  event.stopPropagation()
+                                  this.handleNewApiClick(group)
+                              }}
+                        />
+                    </div>
+                </Accordion.Title>
+            )
+
+            // Pane content
+            panels.push(
+                <Accordion.Content key={`content-${i}`}>
+                    <ApiSpecList group={group} />
+                </Accordion.Content>
+            )
         }.bind(this))
 
         return(
