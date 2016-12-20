@@ -4,7 +4,7 @@ import { push } from 'react-router-redux'
 
 import { Accordion, Icon, Modal, Button } from 'semantic-ui-react'
 
-import { loadApiGroups, createApiGroup, updateApiGroup } from '../actions'
+import { loadApiGroups, createApiGroup, updateApiGroup, loadApiSpecs } from '../actions'
 import ApiGroupForm from '../components/ApiGroupForm'
 import ApiSpecList from '../containers/ApiSpecList'
 
@@ -34,7 +34,6 @@ class ApiListPane extends Component {
     }
 
     handleNewApiClick(group = null) {
-        console.log('create api in group', group)
         var path = '/b/newspec';
         if (group) {
             path += `?gid=${group.id}`
@@ -42,9 +41,11 @@ class ApiListPane extends Component {
         this.props.dispatch(push(path))
     }
 
-    handleGroupTitleClick(event, index, titleProps) {
+    handleGroupTitleClick(event, group) {
         var prevActive = event.target.classList.contains('active')
-
+        if (!prevActive) {
+            this.props.dispatch(loadApiSpecs(group.id))
+        }
     }
 
     renderApiGroups() {
@@ -55,7 +56,10 @@ class ApiListPane extends Component {
         apiGroups.groups.forEach(function(group, i) {
             // Pane title
             panels.push(
-                <Accordion.Title key={`title-${i}`} onClick={this.handleGroupTitleClick}>
+                <Accordion.Title key={`title-${i}`}
+                                 onClick={event => {
+                                     this.handleGroupTitleClick(event, group)
+                                 }}>
                     <Icon name='dropdown' />
                     {group.name}
                     <div className="btns">
@@ -157,7 +161,8 @@ class ApiListPane extends Component {
 function mapStateToProps(state) {
     return {
         apiGroups: state.apiGroups,
-        apiGroupRequest: state.apiGroupRequest
+        apiGroupRequest: state.apiGroupRequest,
+        apiSpecs: state.apiSpecs
     }
 }
 

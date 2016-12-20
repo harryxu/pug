@@ -53,6 +53,33 @@ export function updateApiGroup(data) {
 //      API Spec
 //
 
+export function loadApiSpecs(groupId = 0) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: LOAD_API_SPECS,
+            groupId,
+            pending: true
+        })
+
+        return webfetch(apiUrl(`spec?gid=${groupId}`))
+            .then(response => {
+                return response.json()
+            })
+            .then(json => {
+                dispatch(receiveApiSpecs(groupId, json))
+            })
+    }
+}
+
+export function receiveApiSpecs(groupId, data) {
+    return {
+        type: LOAD_API_SPECS,
+        pending: false,
+        groupId,
+        data
+    }
+}
+
 export function createApiSpec(data) {
     return commonWrite('spec', CREATE_API_SPEC, data);
 }

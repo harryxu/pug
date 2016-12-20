@@ -43,7 +43,18 @@ function activeApiSpec(state={pending: false}, action) {
 }
 
 function apiSpecs(state = {}, action) {
-    return state;
+    if (action.type != actions.LOAD_API_SPECS) {
+        return state;
+    }
+
+    var specObj = {
+        [action.groupId]: {
+            pending: action.pending,
+            data: action.pending ? [] : action.data
+        }
+    }
+
+    return Object.assign({}, state, specObj);
 }
 
 function globalConfig(state = {}, action) {

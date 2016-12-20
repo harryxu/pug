@@ -14,8 +14,8 @@ class SpecController extends Controller
         /** @var Builder $query **/
         $query = ApiSpec::where('user_id', $request->user()->id);
 
-        if ($request->has('group_id')) {
-            $query->where('group_id', $request->get('group_id'));
+        if ($request->has('gid')) {
+            $query->where('group_id', $request->get('gid'));
         }
         else {
             $query->whereNull('group_id');
