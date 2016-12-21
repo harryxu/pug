@@ -13,6 +13,7 @@ export default (
 
         <Route path={path('b/newspec')} component={ApiSpecPane} />
 
+        <Route path={path('b/spec/:id')} component={ApiSpecPane} />
 
     </Route>
 )

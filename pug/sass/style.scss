@@ -77,8 +77,20 @@ html {
           background: #efefef;
         }
       }
+
+      .content {
+        padding: 0;
+      }
     }
 
+  }
+
+  .api-spec-list {
+    .ui.menu {
+      box-shadow: none;
+      border-radius: 0;
+      border: none;
+    }
   }
 }
 
@@ -130,3 +142,4 @@ html {
     box-sizing: border-box;
   }
 }
+
