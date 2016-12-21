@@ -11,14 +11,8 @@ class ApiSpecPane extends Component {
     constructor(props) {
         super(props);
 
-        this.defaultSpec = {
-            method: 'GET',
-            name: '',
-            path: ''
-        }
-
         this.state = {
-            spec: this.defaultSpec
+            spec: this.newSpec()
         }
 
 
@@ -26,28 +20,40 @@ class ApiSpecPane extends Component {
                         .map(v => ({value: v, label: v}));
     }
 
+    newSpec() {
+        return {
+            method: 'GET',
+            name: '',
+            path: ''
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
-        var newSpec = _.isEmpty(nextProps.spec.data) ? this.defaultSpec : nextProps.spec.data
+        var nextSpec = _.isEmpty(nextProps.spec.data) ? this.newSpec() : nextProps.spec.data
 
         this.setState({
-            spec: newSpec
+            spec: nextSpec
         })
 
         if (nextProps.params.id != this.props.params.id) {
             if (nextProps.params.id) {
-                this.props.dispatch(loadActiveApiSpec(nextProps.params.id))
+                this.loadSpec(nextProps.params.id)
             }
             else {
                 // Trans to creation mode.
-                this.setState({spec: this.defaultSpec})
+                this.setState({spec: this.newSpec()})
             }
         }
     }
 
     componentDidMount() {
         if (this.props.params.id) {
-            this.props.dispatch(loadActiveApiSpec(this.props.params.id))
+            this.loadSpec(this.props.params.id)
         }
+    }
+
+    loadSpec(id) {
+        this.props.dispatch(loadActiveApiSpec(id))
     }
 
     handleSaveSpec(event, data) {

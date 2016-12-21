@@ -48,10 +48,17 @@ function apiSpecs(state = {}, action) {
         return state;
     }
 
+    if (action.pending) {
+        var specs = state[action.groupId] ? state[action.groupId].data : []
+    }
+    else {
+        var specs = action.data
+    }
+
     var specObj = {
         [action.groupId]: {
             pending: action.pending,
-            data: action.pending ? [] : action.data
+            data: specs
         }
     }
 

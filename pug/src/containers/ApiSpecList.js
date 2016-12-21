@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
@@ -17,6 +18,7 @@ class ApiSpecList extends Component {
                 {
                     apiList.map(function(spec, i) {
                         return <Menu.Item key={i} name={spec.name} content={spec.name}
+                                          active={this.props.activeSpec.id == spec.id}
                                           onClick={event => this.handleMenuItenClick(event, spec)} />
                     }.bind(this))
                 }
@@ -29,7 +31,7 @@ class ApiSpecList extends Component {
 
         return (
             <div className="api-spec-list">
-                {specs.pending ? 'Loading...' : this.renderMenu(specs.data)}
+                {(specs.pending && _.isEmpty(specs.data)) ? 'Loading...' : this.renderMenu(specs.data)}
             </div>
         )
     }
@@ -38,7 +40,8 @@ class ApiSpecList extends Component {
 function mapStateToProps(state, ownProps) {
     var specs = state.apiSpecs[ownProps.group.id] || { pending: false, data: [] };
     return {
-        specs
+        specs,
+        activeSpec: state.activeApiSpec.data
     }
 }
 

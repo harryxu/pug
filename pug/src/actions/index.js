@@ -88,12 +88,17 @@ export function receiveApiSpecs(groupId, data) {
 
 export function createApiSpec(data) {
     return commonWrite('spec', CREATE_API_SPEC, data, 'POST',
-        (p, dispatch) => p.then(spec => dispatch(push(`/b/spec/${spec.id}`)))
+        (p, dispatch) => p.then(spec => {
+            dispatch(push(`/b/spec/${spec.id}`))    // redirect to spec page
+            dispatch(loadApiSpecs(spec.group_id))   // reload spec list
+        })
     );
 }
 
 export function updateApiSpec(data) {
-    return commonWrite(`spec/${data.id}`, UPDATE_API_SPEC, data, 'PUT');
+    return commonWrite(`spec/${data.id}`, UPDATE_API_SPEC, data, 'PUT',
+        (p, dispatch) => p.then(spec => dispatch(loadApiSpecs(spec.group_id)))  // reload spec list })
+    )
 }
 
 /**
