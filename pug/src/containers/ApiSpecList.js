@@ -16,7 +16,7 @@ class ApiSpecList extends Component {
             <Menu vertical fluid>
                 {
                     apiList.map(function(spec, i) {
-                        return <Menu.Item key={i} name={spec.name}
+                        return <Menu.Item key={i} name={spec.name} content={spec.name}
                                           onClick={event => this.handleMenuItenClick(event, spec)} />
                     }.bind(this))
                 }

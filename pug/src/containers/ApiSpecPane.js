@@ -1,7 +1,8 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Input, Button } from 'semantic-ui-react'
 
 import { createApiSpec, updateApiSpec, loadActiveApiSpec } from '../actions'
 
@@ -10,36 +11,50 @@ class ApiSpecPane extends Component {
     constructor(props) {
         super(props);
 
+        this.defaultSpec = {
+            method: 'GET',
+            name: '',
+            path: ''
+        }
 
         this.state = {
-            requestVerb: 'GET'
+            spec: this.defaultSpec
         }
+
 
         this.verbs = ['GET', 'PUT', 'PATCH', 'DELETE']
                         .map(v => ({value: v, label: v}));
     }
 
-    componentDidMount() {
+    componentWillReceiveProps(nextProps) {
+        var newSpec = _.isEmpty(nextProps.spec.data) ? this.defaultSpec : nextProps.spec.data
 
-        var {params, dispatch} = this.props
+        this.setState({
+            spec: newSpec
+        })
 
-        if (params.id) {
-            dispatch(loadActiveApiSpec(params.id))
+        if (nextProps.params.id != this.props.params.id) {
+            if (nextProps.params.id) {
+                this.props.dispatch(loadActiveApiSpec(nextProps.params.id))
+            }
+            else {
+                // Trans to creation mode.
+                this.setState({spec: this.defaultSpec})
+            }
         }
-
     }
 
-    updateVerb(verb) {
-        this.setState({
-            requestVerb: verb
-        })
+    componentDidMount() {
+        if (this.props.params.id) {
+            this.props.dispatch(loadActiveApiSpec(this.props.params.id))
+        }
     }
 
     handleSaveSpec(event, data) {
         event.preventDefault()
 
         var formData = data.formData
-        var spec = this.props.spec.data
+        var spec = this.state.spec
 
         if (spec.id) {
             formData.id = spec.id
@@ -54,39 +69,53 @@ class ApiSpecPane extends Component {
         }
     }
 
+    handleUpdateSpec(value) {
+        var specvo = value;
+
+        if (!_.isPlainObject(value)) { // value should be a event object
+            specvo = { [value.target.name]: value.target.value }
+        }
+
+        this.setState({
+            spec: Object.assign(this.state.spec, specvo)
+        })
+
+    }
+
     renderSpecSetting() {
 
-        const {spec} = this.props
-        console.log('ssss', spec)
+        const {spec} = this.state
+
+        const handleChange = this.handleUpdateSpec.bind(this)
 
         return (
-            <Form className="api-box spec-setting" onSubmit={this.handleSaveSpec.bind(this)}>
+            <Form className="api-box spec-setting"
+                  loading={this.props.spec.pending}
+                  onSubmit={this.handleSaveSpec.bind(this)}>
 
                 <div className="request-info">
                     <div className="verb-select spec-field">
                         <Select name="method" searchable={false}
                                 options={this.verbs}
-                                defaultValue={spec.data.method}
-                                value={this.state.requestVerb}
-                                clearable={false} onChange={this.updateVerb.bind(this)}/>
+                                value={spec.method}
+                                clearable={false}
+                                onChange={value => handleChange({method: value})}/>
                     </div>
 
                     <div className="ui message base-path spec-field">
                         {this.props.globalConfig.baseUrl}/
                     </div>
 
-                    <div className="ui input path-input sped-field">
-                        <input type="text" name="path" placeholder="Request path"
-                               value={spec.data.path}/>
-                    </div>
+                    <Input name="path" className="path-input spec-field" placeholder="Request path"
+                           value={spec.path} onChange={handleChange}/>
                 </div>
 
-                <div className="ui input name-input sped-field">
+                <div className="ui input name-input spec-field">
                     <input type="text" name="name" placeholder="Request Name"
-                           value={spec.data.name}/>
+                           value={spec.name} onChange={handleChange}/>
                 </div>
 
-                <Button className="btn-save" loading={this.props.spec.pending} primary size="mini">Save</Button>
+                <Button className="btn-save" primary size="mini">Save</Button>
             </Form>
         )
     }
