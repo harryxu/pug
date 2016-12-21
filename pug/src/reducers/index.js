@@ -33,6 +33,7 @@ function activeApiSpec(state={pending: false}, action) {
     switch (action.type) {
         case actions.CREATE_API_SPEC:
         case actions.UPDATE_API_SPEC:
+        case actions.LOAD_ACTIVE_API_SPEC:
             return Object.assign({}, state, {
                 pending: action.pending,
                 data: action.pending ? {} : action.data

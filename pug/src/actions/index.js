@@ -8,6 +8,8 @@ export const LOAD_API_SPECS = 'LOAD_API_SPECS'
 export const CREATE_API_SPEC = 'CREATE_API_SPEC'
 export const UPDATE_API_SPEC = 'UPDATE_API_SPEC'
 
+export const LOAD_ACTIVE_API_SPEC = 'LOAD_ACTIVE_API_SPEC'
+
 
 //
 //      API Group
@@ -86,6 +88,32 @@ export function createApiSpec(data) {
 
 export function updateApiSpec(data) {
     return commonWrite(`spec/${data.id}`, UPDATE_API_SPEC, data, 'PUT');
+}
+
+/**
+ * Load a single api spec by id.
+ *
+ * @param id
+ */
+export function loadActiveApiSpec(id) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: LOAD_ACTIVE_API_SPEC,
+            pending: true
+        })
+
+        return webfetch(apiUrl(`spec/${id}`))
+            .then(response => {
+                return response.json()
+            })
+            .then(json => {
+                dispatch({
+                    type: LOAD_ACTIVE_API_SPEC,
+                    pending: false,
+                    data: json
+                })
+            })
+    }
 }
 
 

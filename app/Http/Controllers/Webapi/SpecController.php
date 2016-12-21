@@ -24,6 +24,12 @@ class SpecController extends Controller
         return $query->orderBy('order', 'desc')->get();
     }
 
+    public function show($id)
+    {
+        $apiSpec = ApiSpec::findOrFail($id);
+        return $apiSpec;
+    }
+
     public function store(Request $request)
     {
         $this->validateSpec($request);

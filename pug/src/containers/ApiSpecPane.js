@@ -3,18 +3,30 @@ import { connect } from 'react-redux'
 import Select from 'react-select'
 import { Form, Button } from 'semantic-ui-react'
 
-import { createApiSpec, updateApiSpec } from '../actions'
+import { createApiSpec, updateApiSpec, loadActiveApiSpec } from '../actions'
 
 class ApiSpecPane extends Component {
 
     constructor(props) {
         super(props);
+
+
         this.state = {
             requestVerb: 'GET'
         }
 
         this.verbs = ['GET', 'PUT', 'PATCH', 'DELETE']
                         .map(v => ({value: v, label: v}));
+    }
+
+    componentDidMount() {
+
+        var {params, dispatch} = this.props
+
+        if (params.id) {
+            dispatch(loadActiveApiSpec(params.id))
+        }
+
     }
 
     updateVerb(verb) {
@@ -44,13 +56,18 @@ class ApiSpecPane extends Component {
 
     renderSpecSetting() {
 
+        const {spec} = this.props
+        console.log('ssss', spec)
+
         return (
             <Form className="api-box spec-setting" onSubmit={this.handleSaveSpec.bind(this)}>
 
                 <div className="request-info">
                     <div className="verb-select spec-field">
                         <Select name="method" searchable={false}
-                                options={this.verbs} value={this.state.requestVerb}
+                                options={this.verbs}
+                                defaultValue={spec.data.method}
+                                value={this.state.requestVerb}
                                 clearable={false} onChange={this.updateVerb.bind(this)}/>
                     </div>
 
@@ -59,12 +76,14 @@ class ApiSpecPane extends Component {
                     </div>
 
                     <div className="ui input path-input sped-field">
-                        <input type="text" name="path" placeholder="Request path"/>
+                        <input type="text" name="path" placeholder="Request path"
+                               value={spec.data.path}/>
                     </div>
                 </div>
 
                 <div className="ui input name-input sped-field">
-                    <input type="text" name="name" placeholder="Request Name" />
+                    <input type="text" name="name" placeholder="Request Name"
+                           value={spec.data.name}/>
                 </div>
 
                 <Button className="btn-save" loading={this.props.spec.pending} primary size="mini">Save</Button>
@@ -81,7 +100,7 @@ class ApiSpecPane extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
     return {
         globalConfig: state.globalConfig,
         spec: state.activeApiSpec

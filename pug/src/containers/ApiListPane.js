@@ -43,7 +43,7 @@ class ApiListPane extends Component {
 
     handleGroupTitleClick(event, group) {
         var prevActive = event.target.classList.contains('active')
-        if (!prevActive) {
+        if (!prevActive && !this.props.apiSpecs[group.id]) {
             this.props.dispatch(loadApiSpecs(group.id))
         }
     }

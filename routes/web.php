@@ -17,7 +17,7 @@ Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'au
     ]);
 
     Route::resource('spec', 'SpecController',[
-        'only' => ['index', 'store', 'update', 'destory'],
+        'only' => ['index', 'show', 'store', 'update', 'destory'],
     ]);
 
 });
