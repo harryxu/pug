@@ -9,6 +9,20 @@ use Illuminate\Http\Request;
 
 class SpecController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function(Request $request, $next) {
+
+            $spec = $request->route('spec');
+            if ($spec instanceof ApiSpec && $spec->user_id != $request->user()->id) {
+                abort(404);
+            }
+
+            return $next($request);
+        });
+    }
+
     public function index(Request $request)
     {
         /** @var Builder $query **/
@@ -24,10 +38,9 @@ class SpecController extends Controller
         return $query->orderBy('order', 'desc')->get();
     }
 
-    public function show($id)
+    public function show(ApiSpec $spec)
     {
-        $apiSpec = ApiSpec::findOrFail($id);
-        return $apiSpec;
+        return $spec;
     }
 
     public function store(Request $request)
