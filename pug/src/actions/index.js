@@ -1,5 +1,7 @@
 import { webfetch, createFormData, path, apiUrl } from '../helper'
 
+import { push } from 'react-router-redux'
+
 export const LOAD_API_GROUPS = 'LOAD_API_GROUPS'
 export const CREATE_API_GROUP = 'CREATE_API_GROUP'
 export const UPDATE_API_GROUP = 'UPDATE_API_GROUP'
@@ -42,13 +44,15 @@ export function receiveApiGroups(data) {
 
 export function createApiGroup(data) {
     return commonWrite('group', CREATE_API_GROUP, data, 'POST',
-        (p, dispatch) => p.then(() => dispatch(loadApiGroups())))
+        (p, dispatch) => p.then(() => dispatch(loadApiGroups()))
+    )
 
 }
 
 export function updateApiGroup(data) {
     return commonWrite(`group/${data.id}`, UPDATE_API_GROUP, data, 'PUT',
-        (p, dispatch) => p.then(() => dispatch(loadApiGroups())))
+        (p, dispatch) => p.then(() => dispatch(loadApiGroups()))
+    )
 }
 
 //
@@ -83,7 +87,9 @@ export function receiveApiSpecs(groupId, data) {
 }
 
 export function createApiSpec(data) {
-    return commonWrite('spec', CREATE_API_SPEC, data);
+    return commonWrite('spec', CREATE_API_SPEC, data, 'POST',
+        (p, dispatch) => p.then(spec => dispatch(push(`/b/spec/${spec.id}`)))
+    );
 }
 
 export function updateApiSpec(data) {
@@ -140,11 +146,12 @@ export function commonWrite(path, actionType, data, method='POST', middleware = 
             })
             .then(response => { return response.json() })
             .then(json => {
-                return dispatch({
+                dispatch({
                     type: actionType,
                     pending: false,
                     data: json
                 })
+                return json
             })
         return middleware(p, dispatch, getState)
     }
