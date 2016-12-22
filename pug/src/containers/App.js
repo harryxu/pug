@@ -24,7 +24,7 @@ class App extends Component {
                         <div>
                             <ApiListPane/>
                         </div>
-                        <div>{this.props.children}</div>
+                        {this.props.children}
                     </SplitPane>
                 </div>
             </div>

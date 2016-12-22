@@ -12,4 +12,9 @@ class ApiSpec extends Model
         'user_id', 'group_id', 'path', 'name', 'desc',
         'method', 'default_response_id',
     ];
+
+    public function responses()
+    {
+        return $this->hasMany(ApiResponse::class, 'spec_id');
+    }
 }

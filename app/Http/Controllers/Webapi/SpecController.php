@@ -35,7 +35,7 @@ class SpecController extends Controller
             $query->whereNull('group_id');
         }
 
-        return $query->orderBy('order', 'desc')->get();
+        return $query->orderBy('order', 'desc')->get(['id', 'name', 'path', 'method']);
     }
 
     public function show(ApiSpec $spec)

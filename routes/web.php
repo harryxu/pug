@@ -20,6 +20,10 @@ Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'au
         'only' => ['index', 'show', 'store', 'update', 'destory'],
     ]);
 
+    Route::resource('response', 'ResponseController',[
+        'only' => ['index', 'show', 'store', 'update', 'destory'],
+    ]);
+
 });
 
 Route::get('webapi/scripts', function() {
