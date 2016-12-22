@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Select from 'react-select'
 import { Form, Input, Button } from 'semantic-ui-react'
 
+import ResponsePane from './ResponsePane'
 import { createApiSpec, updateApiSpec, loadActiveApiSpec } from '../actions'
 
 class ApiSpecPane extends Component {
@@ -130,6 +131,8 @@ class ApiSpecPane extends Component {
         return(
             <div className="api-spec-pane">
                 {this.renderSpecSetting()}
+
+                {this.state.spec.id ? <ResponsePane /> : ''}
             </div>
         )
     }
