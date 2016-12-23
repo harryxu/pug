@@ -65,6 +65,10 @@ function apiSpecs(state = {}, action) {
     return Object.assign({}, state, specObj);
 }
 
+function activeApiResponse(state = {pending: false, data: {}}, action) {
+    return state
+}
+
 function globalConfig(state = {}, action) {
     return state
 }
@@ -74,6 +78,7 @@ const rootReducer = combineReducers({
     apiGroupRequest,
     apiSpecs,
     activeApiSpec,
+    activeApiResponse,
     globalConfig,
     routing,
 })

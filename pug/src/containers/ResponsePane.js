@@ -4,6 +4,11 @@ import { connect } from 'react-redux'
 import { Menu, Form, Input, Button } from 'semantic-ui-react'
 import Select from 'react-select'
 
+import AceEditor from 'react-ace';
+import 'brace/theme/github';
+import 'brace/mode/json';
+import 'brace/mode/xml';
+
 class ResponsePane extends Component {
 
     static contentTypes = [
@@ -61,6 +66,20 @@ class ResponsePane extends Component {
                         />
                     </div>
                 </Form.Group>
+
+                <div className="field">
+                    <label>Body</label>
+                    <AceEditor
+                        mode="json"
+                        theme="github"
+                        name="body"
+                        fontSize={20}
+                        width="100%"
+                        tabSize={2}
+                    />
+                </div>
+
+                <Form.Button>Save</Form.Button>
             </Form>
         )
     }

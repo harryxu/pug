@@ -30,6 +30,12 @@ var initState = {
         data: {}
     },
 
+    // Current active api response
+    activeApiResponse: {
+        pending: false,
+        data: {}
+    },
+
     // Api spec list, data grouped by group id, ungrouped api in key 0
     // {0:[...], 1:[...]}
     apiSpecs: {},

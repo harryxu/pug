@@ -9,8 +9,10 @@ export const UPDATE_API_GROUP = 'UPDATE_API_GROUP'
 export const LOAD_API_SPECS = 'LOAD_API_SPECS'
 export const CREATE_API_SPEC = 'CREATE_API_SPEC'
 export const UPDATE_API_SPEC = 'UPDATE_API_SPEC'
-
 export const LOAD_ACTIVE_API_SPEC = 'LOAD_ACTIVE_API_SPEC'
+
+export const create_api_response = 'create_api_response'
+export const update_api_response = 'update_api_response'
 
 
 //
