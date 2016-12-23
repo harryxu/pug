@@ -9,9 +9,6 @@ import ApiListPane from './ApiListPane'
 class App extends Component {
 
     render() {
-        const paneStyle = {
-            position: 'static'
-        }
 
         return (
             <div className="root">
@@ -20,10 +17,8 @@ class App extends Component {
                         <Menu.Item header>Pug</Menu.Item>
                     </Menu>
 
-                    <SplitPane style={paneStyle} split="vertical" minSize={150} defaultSize={260}>
-                        <div>
-                            <ApiListPane/>
-                        </div>
+                    <SplitPane split="vertical" minSize={150} defaultSize={260}>
+                        <ApiListPane/>
                         {this.props.children}
                     </SplitPane>
                 </div>

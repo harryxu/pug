@@ -35,11 +35,18 @@ html {
 
     & > .SplitPane {
       position: static !important;
+
+      & > .Pane {
+        display: flex;
+        flex-direction: column;
+      }
     }
   }
 }
 
 .api-list-pane {
+  display: flex;
+  flex-direction: column;
 
   .toolbar {
     background: #efefef;
@@ -55,6 +62,8 @@ html {
   }
 
   .api-groups-list {
+    flex-grow: 1;
+    overflow-y: auto;
 
     .ui.styled.accordion {
       border-radius: 0;
@@ -96,7 +105,8 @@ html {
 
 .api-spec-pane {
   padding: 10px;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
 
   .request-info {
     .spec-field {
@@ -146,9 +156,9 @@ html {
 .response-pane {
   margin-top: 10px;
   display: flex;
-  height: 100%;
   flex-direction: row;
-  overflow: hidden;
+  flex-grow: 1;
+
 
   .response-list {
     width: 200px;
@@ -161,7 +171,13 @@ html {
   }
 }
 
+.ace_editor {
+  border: 1px solid #DDD;
+  border-radius: 4px;
+}
 
+
+// Revert react select style.
 .ui.form .Select-input>input {
   width: 100%;
   background: none;
@@ -176,4 +192,22 @@ html {
   line-height: 14px;
   padding: 8px 0 12px;
   -webkit-appearance: none;
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #acacac;
 }
