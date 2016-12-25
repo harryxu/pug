@@ -66,7 +66,31 @@ function apiSpecs(state = {}, action) {
 }
 
 function activeApiResponse(state = {pending: false, data: {}}, action) {
-    return state
+    switch (action.type) {
+        case actions.CREATE_API_RESPONSE:
+        case actions.UPDATE_API_RESPONSE:
+        case actions.ACTIVE_API_RESPONSE:
+            return {
+                pending: action.pending,
+                data: action.data || {}
+            }
+
+        default:
+            return state
+    }
+}
+
+function apiResponses(state = {pending: false, responses:[]}, action) {
+    switch (action.type) {
+        case actions.LOAD_API_RESPONSE_LIST:
+            return {
+                pending: action.pending,
+                responses: action.data ? action.data : state.responses
+            }
+
+        default:
+            return state
+    }
 }
 
 function globalConfig(state = {}, action) {
@@ -76,9 +100,13 @@ function globalConfig(state = {}, action) {
 const rootReducer = combineReducers({
     apiGroups,
     apiGroupRequest,
+
     apiSpecs,
     activeApiSpec,
+
     activeApiResponse,
+    apiResponses,
+
     globalConfig,
     routing,
 })

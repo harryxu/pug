@@ -167,6 +167,11 @@ html {
     padding: 0 20px;
     flex-grow: 1;
     overflow-y: auto;
+
+    .match-pattern textarea {
+      font-family: monospace;
+    }
+
   }
 }
 
@@ -191,6 +196,10 @@ html {
   line-height: 14px;
   padding: 8px 0 12px;
   -webkit-appearance: none;
+}
+
+.Select-menu-outer {
+  z-index: 100;
 }
 
 /* Let's get this party started */

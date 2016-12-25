@@ -19,7 +19,7 @@ class ApiSpecList extends Component {
                     apiList.map(function(spec, i) {
                         return <Menu.Item key={i} name={spec.name} content={spec.name}
                                           active={this.props.activeSpec.id == spec.id}
-                                          onClick={event => this.handleMenuItenClick(event, spec)} />
+                                          onClick={e => this.handleMenuItenClick(e, spec)} />
                     }.bind(this))
                 }
             </Menu>

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { Menu, Form, Input, Button } from 'semantic-ui-react'
+import { Menu, Form } from 'semantic-ui-react'
 import Select from 'react-select'
 
 import AceEditor from 'react-ace'
@@ -11,7 +11,7 @@ import 'brace/mode/xml'
 import 'brace/mode/html'
 import 'brace/mode/plain_text'
 
-import { createApiResponse, updateApiResponse } from '../actions'
+import { createApiResponse, updateApiResponse, loadApiResponseList, activeApiResponse } from '../actions'
 
 class ResponsePane extends Component {
 
@@ -54,6 +54,34 @@ class ResponsePane extends Component {
                 value: response.content_type,
                 mode: this.findEditorMode(response.content_type)
             }
+        }
+    }
+
+    componentDidMount() {
+        this.props.dispatch(loadApiResponseList(this.props.request.id))
+
+        var response = this.props.activeResponse.data
+        if (response.id) {
+            this.setState({
+                response,
+                contentType: {
+                    value: response.content_type,
+                    mode: this.findEditorMode(response.content_type)
+                }
+            })
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        var response = nextProps.activeResponse.data
+        if (response.id != this.state.response.id) {
+            this.setState({
+                response,
+                contentType: {
+                    value: response.content_type,
+                    mode: this.findEditorMode(response.content_type)
+                }
+            })
         }
     }
 
@@ -101,18 +129,33 @@ class ResponsePane extends Component {
         }
     }
 
-    renderMenu() {
-        return (
-            <Menu vertical fluid>
-            </Menu>
-        )
+    handleResponseMenuClick(event, response) {
+        this.props.dispatch(activeApiResponse(response))
     }
 
+    /**
+     * Response list menu.
+     */
+    renderMenu() {
+        var items = this.props.responseList.responses.map(function(response, i) {
+            return <Menu.Item key={i} active={this.state.response.id == response.id}
+                              name={response.name} content={response.name}
+                              onClick={e => this.handleResponseMenuClick(e, response)}/>
+        }.bind(this))
+
+        return <Menu vertical fluid>{items}</Menu>
+    }
+
+    /**
+     * Active response editor form.
+     */
     renderResponse() {
+        const {response} = this.state
+
         return (
-            <Form className="response-detail">
+            <Form className="response-detail" loading={this.props.activeResponse.pending}>
                 <Form.Group widths='equal'>
-                    <Form.Input name="name" label="Name:"
+                    <Form.Input name="name" label="Name:" value={response.name}
                                 onChange={this.handleFieldChange.bind(this)} />
 
                     <div className="field">
@@ -128,11 +171,16 @@ class ResponsePane extends Component {
                         <label>Status Code</label>
                         <Select name="status_code"
                                 options={this.constructor.statusCodes}
-                                value={this.state.response.status_code}
-                                onChange={status_code => this.handleFieldChange({status_code})}
+                                value={response.status_code}
+                                onChange={data => this.handleFieldChange({status_code: data.value})}
                         />
                     </div>
                 </Form.Group>
+
+                <Form.TextArea label="Match Pattern" rows="2" className="match-pattern"
+                               name="match_pattern"
+                               value={response.match_pattern || ''}
+                               onChange={this.handleFieldChange.bind(this)}/>
 
                 <div className="field">
                     <label>Body</label>
@@ -142,9 +190,11 @@ class ResponsePane extends Component {
                         name="body"
                         fontSize={20}
                         width="100%"
+                        height="200px"
                         tabSize={2}
-                        value={this.state.response.body}
+                        value={response.body}
                         onChange={body => this.handleFieldChange({body})}
+                        editorProps={{$blockScrolling: true}}
                     />
                 </div>
 
@@ -171,7 +221,8 @@ class ResponsePane extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        response: state.activeApiResponse,
+        activeResponse: state.activeApiResponse,
+        responseList: state.apiResponses
     }
 }
 

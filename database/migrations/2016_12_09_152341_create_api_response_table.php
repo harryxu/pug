@@ -15,6 +15,7 @@ class CreateApiResponseTable extends Migration
     {
         Schema::create('api_response', function(Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
             $table->integer('request_id')->index();
             $table->string('content_type')->nullable();
             $table->integer('status_code');

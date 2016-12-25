@@ -13,6 +13,8 @@ export const LOAD_ACTIVE_API_SPEC = 'LOAD_ACTIVE_API_SPEC'
 
 export const CREATE_API_RESPONSE = 'CREATE_API_RESPONSE'
 export const UPDATE_API_RESPONSE = 'UPDATE_API_RESPONSE'
+export const LOAD_API_RESPONSE_LIST = 'LOAD_API_RESPONSE_LIST'
+export const ACTIVE_API_RESPONSE = 'ACTIVE_API_RESPONSE'
 
 
 //
@@ -94,7 +96,7 @@ export function createApiSpec(data) {
             dispatch(push(`/b/spec/${spec.id}`))    // redirect to spec page
             dispatch(loadApiSpecs(spec.group_id))   // reload spec list
         })
-    );
+    )
 }
 
 export function updateApiSpec(data) {
@@ -102,6 +104,7 @@ export function updateApiSpec(data) {
         (p, dispatch) => p.then(spec => dispatch(loadApiSpecs(spec.group_id)))  // reload spec list })
     )
 }
+
 
 /**
  * Load a single api spec by id.
@@ -135,11 +138,53 @@ export function loadActiveApiSpec(id) {
 
 export function createApiResponse(data, requestId) {
     data.request_id = requestId
-    return commonWrite('response', CREATE_API_RESPONSE, data)
+    return commonWrite('response', CREATE_API_RESPONSE, data, 'POST',
+        (p, dispatch) => p.then(response => {
+            dispatch(loadApiResponseList(response.request_id))
+            dispatch(activeApiResponse(response))
+        })
+    )
 }
 
 export function updateApiResponse(data) {
+    return commonWrite(`response/${data.id}`, UPDATE_API_RESPONSE, data, 'PUT',
+        (p, dispatch) => p.then(response => {
+            dispatch(loadApiResponseList(response.request_id))
+        })
+    )
+}
 
+export function loadApiResponseList(requestId) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: LOAD_API_RESPONSE_LIST,
+            pending: true
+        })
+
+        return webfetch(apiUrl(`response?request_id=${requestId}`))
+            .then(response => {
+                return response.json()
+            })
+            .then(json => {
+                dispatch(receiveApiResponseList(json))
+            })
+    }
+}
+
+export function receiveApiResponseList(data) {
+    return {
+        type: LOAD_API_RESPONSE_LIST,
+        pending: false,
+        data
+    }
+}
+
+export function activeApiResponse(data) {
+    return {
+        type: ACTIVE_API_RESPONSE,
+        pending: false,
+        data
+    }
 }
 
 
@@ -160,7 +205,7 @@ export function commonWrite(path, actionType, data, method='POST', middleware = 
             pending: true
         })
 
-        var p = webfetch(apiUrl(path), {
+        var promise = webfetch(apiUrl(path), {
                 method,
                 body: createFormData(data)
             })
@@ -173,7 +218,8 @@ export function commonWrite(path, actionType, data, method='POST', middleware = 
                 })
                 return json
             })
-        return middleware(p, dispatch, getState)
+
+        return middleware(promise, dispatch, getState)
     }
 }
 
