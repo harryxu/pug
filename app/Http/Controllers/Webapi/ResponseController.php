@@ -4,25 +4,30 @@ namespace Bigecko\Pug\Http\Controllers\Webapi;
 
 use Bigecko\Pug\Http\Controllers\Controller;
 use Bigecko\Pug\Models\ApiResponse;
-use Bigecko\Pug\Models\ApiSpec;
+use Bigecko\Pug\Models\ApiRequest;
 use Illuminate\Http\Request;
 
 class ResponseController extends Controller
 {
     /**
-     * @var ApiSpec
+     * @var ApiRequest
      */
-    protected $spec;
+    protected $apiRequest;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $specId = $request->get('spec_id');
-        abort_if(empty($specId), 404);
+        $this->middleware(function(Request $request, $next) {
 
-        $this->spec = ApiSpec::find($specId);
-        if (!$this->spec || $this->spec->user_id != $request->user()->id) {
-            abort(404);
-        }
+            $request_id = $request->get('request_id');
+            abort_if(empty($request_id), 404, 'request_id required');
+
+            $this->apiRequest = ApiRequest::find($request_id);
+            if (!$this->apiRequest || $this->apiRequest->user_id != $request->user()->id) {
+                abort(404);
+            }
+
+            return $next($request);
+        });
     }
 
     protected function validateData(Request $request)
@@ -34,7 +39,7 @@ class ResponseController extends Controller
 
     public function index()
     {
-        return $this->spec->responses;
+        return $this->apiRequest->responses;
     }
 
     public function show(ApiResponse $response)

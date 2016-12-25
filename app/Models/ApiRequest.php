@@ -4,9 +4,9 @@ namespace Bigecko\Pug\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ApiSpec extends Model
+class ApiRequest extends Model
 {
-    protected $table = 'api_spec';
+    protected $table = 'api_request';
 
     protected $fillable = [
         'user_id', 'group_id', 'path', 'name', 'desc',
@@ -15,6 +15,6 @@ class ApiSpec extends Model
 
     public function responses()
     {
-        return $this->hasMany(ApiResponse::class, 'spec_id');
+        return $this->hasMany(ApiResponse::class, 'request_id');
     }
 }

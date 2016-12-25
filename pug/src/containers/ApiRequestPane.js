@@ -7,7 +7,7 @@ import { Form, Input, Button } from 'semantic-ui-react'
 import ResponsePane from './ResponsePane'
 import { createApiSpec, updateApiSpec, loadActiveApiSpec } from '../actions'
 
-class ApiSpecPane extends Component {
+class ApiRequestPane extends Component {
 
     constructor(props) {
         super(props);
@@ -132,7 +132,7 @@ class ApiSpecPane extends Component {
             <div className="api-spec-pane">
                 {this.renderSpecSetting()}
 
-                {this.state.spec.id ? <ResponsePane /> : ''}
+                {this.state.spec.id ? <ResponsePane request={this.state.spec} /> : ''}
             </div>
         )
     }
@@ -145,4 +145,4 @@ function mapStateToProps(state, ownProps) {
     }
 }
 
-export default connect(mapStateToProps)(ApiSpecPane)
+export default connect(mapStateToProps)(ApiRequestPane)

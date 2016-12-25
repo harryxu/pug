@@ -13,7 +13,7 @@ class CreateApiSpecTable extends Migration
      */
     public function up()
     {
-        Schema::create('api_spec', function(Blueprint $table) {
+        Schema::create('api_request', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->index();
             $table->integer('group_id')->nullable()->index();
@@ -36,6 +36,6 @@ class CreateApiSpecTable extends Migration
      */
     public function down()
     {
-        Schema::drop('api_spec');
+        Schema::drop('api_request');
     }
 }

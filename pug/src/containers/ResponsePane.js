@@ -4,18 +4,23 @@ import { connect } from 'react-redux'
 import { Menu, Form, Input, Button } from 'semantic-ui-react'
 import Select from 'react-select'
 
-import AceEditor from 'react-ace';
-import 'brace/theme/github';
-import 'brace/mode/json';
-import 'brace/mode/xml';
+import AceEditor from 'react-ace'
+import 'brace/theme/github'
+import 'brace/mode/json'
+import 'brace/mode/xml'
+import 'brace/mode/html'
+import 'brace/mode/plain_text'
+
+import { createApiResponse, updateApiResponse } from '../actions'
 
 class ResponsePane extends Component {
 
     static contentTypes = [
-        'application/json',
-        'application/xml',
-        'text/html'
-    ] .map(v => ({value: v, label: v}));
+        ['application/json', 'json'],
+        ['application/xml', 'xml'],
+        ['text/html', 'html'],
+        ['text/plain', 'plain_text']
+    ] .map(v => ({value: v[0], label: v[0], mode: v[1]}));
 
     static statusCodes = [
         // 2xx
@@ -39,6 +44,63 @@ class ResponsePane extends Component {
 
     ]
 
+    constructor(props) {
+        super(props)
+
+        var response = this.newResponse()
+        this.state = {
+            response,
+            contentType: {
+                value: response.content_type,
+                mode: this.findEditorMode(response.content_type)
+            }
+        }
+    }
+
+    findEditorMode(contentType) {
+        var t = this.constructor.contentTypes.find(ct => ct.value == contentType)
+        return t ? t.mode : 'plain_text'
+    }
+
+    updateContentTypeState(contentType) {
+        var response = Object.assign({}, this.state.response, {
+            content_type: contentType.value
+        })
+
+        this.setState({contentType, response})
+    }
+
+    handleFieldChange(value) {
+        var vo = value;
+
+        if (!_.isPlainObject(value)) { // value should be a event object
+            vo = { [value.target.name]: value.target.value }
+        }
+
+        this.setState({
+            response: Object.assign({}, this.state.response, vo)
+        })
+
+    }
+
+    handleSaveResponse() {
+        var response = this.state.response
+
+        if (!response.id) {
+            this.props.dispatch(createApiResponse(response, this.props.request.id))
+        }
+        else {
+            this.props.dispatch(updateApiResponse(response))
+        }
+    }
+
+    newResponse() {
+        return {
+            status_code: 200,
+            content_type: 'application/json'
+        }
+    }
+
     renderMenu() {
         return (
             <Menu vertical fluid>
@@ -50,12 +112,15 @@ class ResponsePane extends Component {
         return (
             <Form className="response-detail">
                 <Form.Group widths='equal'>
-                    <Form.Input label="Name:" />
+                    <Form.Input name="name" label="Name:"
+                                onChange={this.handleFieldChange.bind(this)} />
 
                     <div className="field">
                         <label>Content Type</label>
                         <Select name="content_type"
                                 options={this.constructor.contentTypes}
+                                value={this.state.contentType.value}
+                                onChange={this.updateContentTypeState.bind(this)}
                         />
                     </div>
 
@@ -63,6 +128,8 @@ class ResponsePane extends Component {
                         <label>Status Code</label>
                         <Select name="status_code"
                                 options={this.constructor.statusCodes}
+                                value={this.state.response.status_code}
+                                onChange={status_code => this.handleFieldChange({status_code})}
                         />
                     </div>
                 </Form.Group>
@@ -70,16 +137,19 @@ class ResponsePane extends Component {
                 <div className="field">
                     <label>Body</label>
                     <AceEditor
-                        mode="json"
+                        mode={this.state.contentType.mode}
                         theme="github"
                         name="body"
                         fontSize={20}
                         width="100%"
                         tabSize={2}
+                        value={this.state.response.body}
+                        onChange={body => this.handleFieldChange({body})}
                     />
                 </div>
 
-                <Form.Button>Save</Form.Button>
+                <Form.Button onClick={this.handleSaveResponse.bind(this)}
+                             primary type="button" >Save</Form.Button>
             </Form>
         )
     }
@@ -101,6 +171,7 @@ class ResponsePane extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
+        response: state.activeApiResponse,
     }
 }
 

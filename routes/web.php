@@ -16,7 +16,7 @@ Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'au
         'only' => ['index', 'store', 'update', 'destory'],
     ]);
 
-    Route::resource('spec', 'SpecController',[
+    Route::resource('req', 'RequestController',[
         'only' => ['index', 'show', 'store', 'update', 'destory'],
     ]);
 

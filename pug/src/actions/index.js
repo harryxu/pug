@@ -11,8 +11,8 @@ export const CREATE_API_SPEC = 'CREATE_API_SPEC'
 export const UPDATE_API_SPEC = 'UPDATE_API_SPEC'
 export const LOAD_ACTIVE_API_SPEC = 'LOAD_ACTIVE_API_SPEC'
 
-export const create_api_response = 'create_api_response'
-export const update_api_response = 'update_api_response'
+export const CREATE_API_RESPONSE = 'CREATE_API_RESPONSE'
+export const UPDATE_API_RESPONSE = 'UPDATE_API_RESPONSE'
 
 
 //
@@ -69,7 +69,7 @@ export function loadApiSpecs(groupId = 0) {
             pending: true
         })
 
-        return webfetch(apiUrl(`spec?gid=${groupId}`))
+        return webfetch(apiUrl(`req?gid=${groupId}`))
             .then(response => {
                 return response.json()
             })
@@ -89,7 +89,7 @@ export function receiveApiSpecs(groupId, data) {
 }
 
 export function createApiSpec(data) {
-    return commonWrite('spec', CREATE_API_SPEC, data, 'POST',
+    return commonWrite('req', CREATE_API_SPEC, data, 'POST',
         (p, dispatch) => p.then(spec => {
             dispatch(push(`/b/spec/${spec.id}`))    // redirect to spec page
             dispatch(loadApiSpecs(spec.group_id))   // reload spec list
@@ -98,7 +98,7 @@ export function createApiSpec(data) {
 }
 
 export function updateApiSpec(data) {
-    return commonWrite(`spec/${data.id}`, UPDATE_API_SPEC, data, 'PUT',
+    return commonWrite(`req/${data.id}`, UPDATE_API_SPEC, data, 'PUT',
         (p, dispatch) => p.then(spec => dispatch(loadApiSpecs(spec.group_id)))  // reload spec list })
     )
 }
@@ -115,7 +115,7 @@ export function loadActiveApiSpec(id) {
             pending: true
         })
 
-        return webfetch(apiUrl(`spec/${id}`))
+        return webfetch(apiUrl(`req/${id}`))
             .then(response => {
                 return response.json()
             })
@@ -127,6 +127,19 @@ export function loadActiveApiSpec(id) {
                 })
             })
     }
+}
+
+//
+//      API response
+//
+
+export function createApiResponse(data, requestId) {
+    data.request_id = requestId
+    return commonWrite('response', CREATE_API_RESPONSE, data)
+}
+
+export function updateApiResponse(data) {
+
 }
 
 

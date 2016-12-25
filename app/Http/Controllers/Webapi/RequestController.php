@@ -3,19 +3,19 @@
 namespace Bigecko\Pug\Http\Controllers\Webapi;
 
 use Bigecko\Pug\Http\Controllers\Controller;
-use Bigecko\Pug\Models\ApiSpec;
+use Bigecko\Pug\Models\ApiRequest;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
-class SpecController extends Controller
+class RequestController extends Controller
 {
 
     public function __construct()
     {
         $this->middleware(function(Request $request, $next) {
 
-            $spec = $request->route('spec');
-            if ($spec instanceof ApiSpec && $spec->user_id != $request->user()->id) {
+            $req = $request->route('req');
+            if ($req instanceof ApiRequest && $req->user_id != $request->user()->id) {
                 abort(404);
             }
 
@@ -26,7 +26,7 @@ class SpecController extends Controller
     public function index(Request $request)
     {
         /** @var Builder $query **/
-        $query = ApiSpec::where('user_id', $request->user()->id);
+        $query = ApiRequest::where('user_id', $request->user()->id);
 
         if ($request->has('gid')) {
             $query->where('group_id', $request->get('gid'));
@@ -38,29 +38,29 @@ class SpecController extends Controller
         return $query->orderBy('order', 'desc')->get(['id', 'name', 'path', 'method']);
     }
 
-    public function show(ApiSpec $spec)
+    public function show(ApiRequest $req)
     {
-        return $spec;
+        return $req;
     }
 
     public function store(Request $request)
     {
         $this->validateSpec($request);
 
-        $spec = new ApiSpec($request->all());
+        $spec = new ApiRequest($request->all());
         $spec->user_id = $request->user()->id;
         $spec->save();
 
         return $spec;
     }
 
-    public function update(ApiSpec $spec, Request $request)
+    public function update(ApiRequest $req, Request $request)
     {
         $this->validateSpec($request);
 
-        $spec->update($request->all());
+        $req->update($request->all());
 
-        return $spec;
+        return $req;
     }
 
     protected function validateSpec(Request $request)
