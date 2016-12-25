@@ -26,7 +26,7 @@ Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'au
 
 });
 
-Route::get('webapi/scripts', function() {
+Route::get('webapi/scripts', function(\Illuminate\Http\Request $request) {
     $csrfToken = csrf_token();
     return "var csrfToken = '$csrfToken';";
 });

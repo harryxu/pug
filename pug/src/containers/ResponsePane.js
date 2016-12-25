@@ -177,7 +177,7 @@ class ResponsePane extends Component {
                     </div>
                 </Form.Group>
 
-                <Form.TextArea label="Match Pattern" rows="2" className="match-pattern"
+                <Form.TextArea label="Match Pattern" rows="1" className="match-pattern"
                                name="match_pattern"
                                value={response.match_pattern || ''}
                                onChange={this.handleFieldChange.bind(this)}/>
@@ -188,9 +188,9 @@ class ResponsePane extends Component {
                         mode={this.state.contentType.mode}
                         theme="github"
                         name="body"
-                        fontSize={20}
+                        fontSize={16}
                         width="100%"
-                        height="200px"
+                        height="300px"
                         tabSize={2}
                         value={response.body}
                         onChange={body => this.handleFieldChange({body})}
