@@ -20,7 +20,7 @@ class RequestApiController extends Controller
 
         $contentType = $resp->content_type ?: 'text/html';
 
-        return response($resp->body)
+        return response($resp->body, $resp->status_code)
                     ->header('Content-Type', $contentType);
     }
 
@@ -35,7 +35,6 @@ class RequestApiController extends Controller
         if ($reqMethod != 'any' && !$request->isMethod($reqMethod)) {
             throw new MethodNotAllowedHttpException([$reqMethod]);
         }
-
 
         return $req;
     }
