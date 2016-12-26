@@ -30,3 +30,6 @@ Route::get('webapi/scripts', function(\Illuminate\Http\Request $request) {
     $csrfToken = csrf_token();
     return "var csrfToken = '$csrfToken';";
 });
+
+Route::any('i/{user}/{path}', 'RequestApiController@processRequest')
+    ->where('path', '.+');
