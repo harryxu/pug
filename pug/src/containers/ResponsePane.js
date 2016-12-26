@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { Menu, Form, Icon } from 'semantic-ui-react'
+import { Menu, Form, TextArea, Label, Icon } from 'semantic-ui-react'
 import Select from 'react-select'
 
 import AceEditor from 'react-ace'
@@ -197,10 +197,18 @@ class ResponsePane extends Component {
                     </div>
                 </Form.Group>
 
-                <Form.TextArea label="Match Pattern" rows="1" className="match-pattern"
-                               name="match_pattern"
-                               value={response.match_pattern || ''}
-                               onChange={this.handleFieldChange.bind(this)}/>
+                <Form.Field>
+
+                    <label>Match Pattern <Icon name="question circle outline" /> </label>
+
+                    <TextArea rows="1" className="match-pattern"
+                              name="match_pattern"
+                              value={response.match_pattern || ''}
+                              onChange={this.handleFieldChange.bind(this)}/>
+
+                </Form.Field>
+
+
 
                 <div className="field">
                     <label>Body</label>
