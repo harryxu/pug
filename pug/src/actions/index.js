@@ -168,8 +168,9 @@ export function loadApiResponseList(requestId) {
             .then(respList => {
                 dispatch(receiveApiResponseList(respList))
 
-                var activeResp = respList.length ? respList[0] : {}
-                dispatch(activeApiResponse(activeResp))
+                if (!getState().activeApiResponse.data.id && respList.length) {
+                    dispatch(activeApiResponse(respList[0]))
+                }
 
                 return respList
             })

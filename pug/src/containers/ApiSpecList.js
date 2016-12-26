@@ -5,10 +5,12 @@ import { push } from 'react-router-redux'
 import { Menu } from 'semantic-ui-react'
 
 import { path } from '../helper'
+import { activeApiResponse } from '../actions'
 
 class ApiSpecList extends Component {
 
     handleMenuItenClick(event, spec) {
+        this.props.dispatch(activeApiResponse({}))
         this.props.dispatch(push(path(`b/spec/${spec.id}`)))
     }
 
