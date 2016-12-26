@@ -165,8 +165,13 @@ export function loadApiResponseList(requestId) {
             .then(response => {
                 return response.json()
             })
-            .then(json => {
-                dispatch(receiveApiResponseList(json))
+            .then(respList => {
+                dispatch(receiveApiResponseList(respList))
+
+                var activeResp = respList.length ? respList[0] : {}
+                dispatch(activeApiResponse(activeResp))
+
+                return respList
             })
     }
 }

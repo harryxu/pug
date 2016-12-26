@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
@@ -50,10 +51,7 @@ class ResponsePane extends Component {
         var response = this.newResponse()
         this.state = {
             response,
-            contentType: {
-                value: response.content_type,
-                mode: this.findEditorMode(response.content_type)
-            }
+            editorMode: this.findEditorMode(response.content_type)
         }
     }
 
@@ -64,15 +62,13 @@ class ResponsePane extends Component {
         if (response.id) {
             this.setState({
                 response,
-                contentType: {
-                    value: response.content_type,
-                    mode: this.findEditorMode(response.content_type)
-                }
+                editorMode: this.findEditorMode(response.content_type)
             })
         }
     }
 
     componentWillReceiveProps(nextProps) {
+        // New active response
         var response = nextProps.activeResponse.data
         if (response.id != this.state.response.id) {
             this.setState({
@@ -85,6 +81,11 @@ class ResponsePane extends Component {
         }
     }
 
+    /**
+     * Get ace editor mode by content type.
+     * @param contentType
+     * @returns {string}
+     */
     findEditorMode(contentType) {
         var t = this.constructor.contentTypes.find(ct => ct.value == contentType)
         return t ? t.mode : 'plain_text'
@@ -95,7 +96,7 @@ class ResponsePane extends Component {
             content_type: contentType.value
         })
 
-        this.setState({contentType, response})
+        this.setState({editorMode: contentType.mode, response})
     }
 
     handleFieldChange(value) {
@@ -174,14 +175,14 @@ class ResponsePane extends Component {
         return (
             <Form className="response-detail" loading={this.props.activeResponse.pending}>
                 <Form.Group widths='equal'>
-                    <Form.Input name="name" label="Name:" value={response.name}
+                    <Form.Input name="name" label="Name:" value={response.name || ''}
                                 onChange={this.handleFieldChange.bind(this)} />
 
                     <div className="field">
                         <label>Content Type</label>
                         <Select name="content_type"
                                 options={this.constructor.contentTypes}
-                                value={this.state.contentType.value}
+                                value={this.state.response.content_type}
                                 onChange={this.updateContentTypeState.bind(this)}
                         />
                     </div>
@@ -204,7 +205,7 @@ class ResponsePane extends Component {
                 <div className="field">
                     <label>Body</label>
                     <AceEditor
-                        mode={this.state.contentType.mode}
+                        mode={this.state.editorMode}
                         theme="github"
                         name="body"
                         fontSize={16}
