@@ -96,7 +96,7 @@ class ApiRequestPane extends Component {
         const handleChange = this.handleUpdateSpec.bind(this)
 
         return (
-            <Form className="api-box spec-setting"
+            <Form className="api-box request-setting"
                   loading={this.props.spec.pending}
                   onSubmit={this.handleSaveSpec.bind(this)}>
 

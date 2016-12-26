@@ -103,83 +103,95 @@ html {
 }
 
 .api-spec-pane {
-  padding: 10px;
   display: flex;
   flex-direction: column;
-
-  .request-info {
-    .spec-field {
-      float: left;
-      margin: 0;
-      height: 36px;
-      border-radius: 0;
-    }
-
-    .verb-select {
-      width: 90px;
-      .Select {
-        &:focus { outline: none; }
-        .Select-control {
-          border-radius: 0;
-          border-right: none;
-        }
-      }
-    }
-    .base-path {
-      font-family: monospace;
-      padding: 8px 3px;
-      border: 1px solid #ccc;;
-      border-right: none;
-      box-shadow: none;
-    }
-    .ui.input.path-input input {
-      font-family: monospace;
-      border: 1px solid #ccc;;
-      border-left: none;
-      border-radius: 0;
-      box-shadow: none;
-      width: 300px;
-      box-sizing: border-box;
-      height: 36px;
-      padding-left: 5px;
-    }
-  }
-
-  .name-input, .btn-save {
-    margin-left: 10px;
-    height: 36px;
-    box-sizing: border-box;
-  }
-}
-
-.response-pane {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
   flex-grow: 1;
 
+  .request-setting {
+    padding: 10px;
+    .request-info {
+      .spec-field {
+        float: left;
+        margin: 0;
+        height: 36px;
+        border-radius: 0;
+      }
 
-  .response-list {
-    width: 200px;
-  }
-
-  .response-detail {
-    padding: 0 20px;
-    flex-grow: 1;
-    overflow-y: auto;
-
-    .match-pattern textarea {
-      font-family: monospace;
+      .verb-select {
+        width: 90px;
+        .Select {
+          &:focus { outline: none; }
+          .Select-control {
+            border-radius: 0;
+            border-right: none;
+          }
+        }
+      }
+      .base-path {
+        font-family: monospace;
+        padding: 8px 3px;
+        border: 1px solid #ccc;;
+        border-right: none;
+        box-shadow: none;
+      }
+      .ui.input.path-input input {
+        font-family: monospace;
+        border: 1px solid #ccc;;
+        border-left: none;
+        border-radius: 0;
+        box-shadow: none;
+        width: 300px;
+        box-sizing: border-box;
+        height: 36px;
+        padding-left: 5px;
+      }
     }
 
+    .name-input, .btn-save {
+      margin-left: 10px;
+      height: 36px;
+      box-sizing: border-box;
+    }
   }
-}
 
-.ace_editor {
-  border: 1px solid #DDD;
-  border-radius: 4px;
-}
+  .response-pane {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
 
+
+    .response-list {
+      width: 210px;
+      box-sizing: border-box;
+      background: #fafafa;
+      padding: 10px;
+
+      .btn-add-resp {
+        float: right;
+        color: #b9b9b9;
+      }
+
+    }
+
+    .response-detail {
+      padding: 0 20px;
+      flex-grow: 1;
+      overflow-y: auto;
+
+      .match-pattern textarea {
+        font-family: monospace;
+      }
+
+    }
+  }
+
+  .ace_editor {
+    border: 1px solid #DDD;
+    border-radius: 4px;
+  }
+
+}
 
 // Revert react select style.
 .ui.form .Select-input>input {

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { Menu, Form } from 'semantic-ui-react'
+import { Menu, Form, Icon } from 'semantic-ui-react'
 import Select from 'react-select'
 
 import AceEditor from 'react-ace'
@@ -124,13 +124,20 @@ class ResponsePane extends Component {
 
     newResponse() {
         return {
+            name: '',
             status_code: 200,
-            content_type: 'application/json'
+            content_type: 'application/json',
+            match_pattern: '',
+            body: ''
         }
     }
 
     handleResponseMenuClick(event, response) {
         this.props.dispatch(activeApiResponse(response))
+    }
+
+    handleNewResponseClick(event) {
+        this.props.dispatch(activeApiResponse(this.newResponse()))
     }
 
     /**
@@ -143,7 +150,19 @@ class ResponsePane extends Component {
                               onClick={e => this.handleResponseMenuClick(e, response)}/>
         }.bind(this))
 
-        return <Menu vertical fluid>{items}</Menu>
+        var menu = items.length > 0 ? <Menu vertical fluid>{items}</Menu> : null
+
+        return (
+            <div className="response-menu">
+                <h5>Responses
+                    <Icon name="add circle" className="icon-btn btn-add-resp"
+                          title="Add New Response"
+                          onClick={this.handleNewResponseClick.bind(this)}/>
+                </h5>
+
+                {menu}
+            </div>
+        )
     }
 
     /**
