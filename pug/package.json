@@ -3,7 +3,7 @@
   "scripts": {
     "start": "node server.js",
     "dash": "webpack-dashboard -- node server.js",
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack --progress --colors"
   },
   "devDependencies": {
     "babel-core": "^6.20.0",

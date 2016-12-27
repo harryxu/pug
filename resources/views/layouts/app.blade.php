@@ -11,8 +11,7 @@
     <title>{{ config('app.name', 'Pug') }}</title>
 
   @section('style')
-    <link href="//cdn.bootcss.com/semantic-ui/2.2.6/semantic.min.css" rel="stylesheet">
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="{{asset('css/semantic-ui/semantic.min.css')}}" rel="stylesheet">
   @show
 
     <script>

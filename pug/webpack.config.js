@@ -72,7 +72,8 @@ else {
 }
 
 var config = {
-    devtool: isdev ? 'eval' : null,
+    debug: isdev,
+    devtool: isdev ? 'cheap-module-eval-source-map' : 'hidden-source-map',
     entry: {
         app: isdev ?
             [
@@ -84,7 +85,13 @@ var config = {
 
         uilib: [
             'semantic-ui-react',
-            'react-ace'
+            'react-ace',
+            'brace',
+            'brace/theme/github',
+            'brace/mode/json',
+            'brace/mode/xml',
+            'brace/mode/html',
+            'brace/mode/plain_text'
         ],
 
         vendor: [
