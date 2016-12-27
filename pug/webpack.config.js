@@ -10,7 +10,10 @@ var isdev = env == 'development';
 
 
 var plugins = [
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.' + fileEnv + '.js'),
+    new webpack.optimize.CommonsChunkPlugin({
+        names: ['vendor', 'uilib'],
+        filename: 'js/[name].'+fileEnv+'.js'
+    }),
     new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(env)
     })
@@ -24,8 +27,14 @@ if (isdev) {
 }
 else {
     plugins = plugins.concat([
-        new ExtractTextPlugin('css/designer.css', {
+        new ExtractTextPlugin('css/style.css', {
             allChunks: true
+        }),
+
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
         })
     ]);
 }
@@ -63,7 +72,7 @@ else {
 }
 
 var config = {
-    devtool: 'eval',
+    devtool: isdev ? 'eval' : null,
     entry: {
         app: isdev ?
             [
@@ -71,15 +80,25 @@ var config = {
                 'webpack/hot/only-dev-server',
                 './src/pug'
             ]
-            : './src/pug',
+            : './src/pug.js',
 
         vendor: [
-            'react',
-            'react-dom',
-            'redux',
-            'redux-thunk',
-            'react-redux',
-            'react-split-pane'
+            "lodash",
+            "react",
+            "react-dom",
+            "react-redux",
+            "react-router",
+            "react-router-redux",
+            "react-select",
+            "react-split-pane",
+            "redux",
+            "redux-thunk",
+            "whatwg-fetch"
+        ],
+
+        uilib: [
+            'semantic-ui-react',
+            'react-ace'
         ]
     },
 
