@@ -20,7 +20,9 @@ class RequestApiController extends Controller
 
         $contentType = $resp->content_type ?: 'text/html';
 
-        return response($resp->body, $resp->status_code)
+        $content = $this->prepareContent($resp->body, $request);
+
+        return response($content, $resp->status_code)
                     ->header('Content-Type', $contentType);
     }
 
@@ -68,5 +70,25 @@ class RequestApiController extends Controller
         }, $matched);
 
         return $matched;
+    }
+
+    protected function prepareContent($body, Request $request)
+    {
+        $pattern = '/\$\{([\w_-]+)\}/';
+
+        preg_match_all($pattern, $body, $placeholders);
+        $placeholders = array_unique($placeholders[1]);
+
+        $data = $request->all();
+        $patterns = [];
+        $values = [];
+        foreach ($placeholders as $keyname) {
+            if (isset($data[$keyname])) {
+                $patterns[] = '/\$\{'.$keyname.'\}/';
+                $values[] = $data[$keyname];
+            }
+        }
+
+        return preg_replace($patterns, $values, $body);
     }
 }
