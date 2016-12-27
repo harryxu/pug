@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { Menu, Form, TextArea, Label, Icon } from 'semantic-ui-react'
+import { Menu, Form, Button, TextArea, Label, Icon } from 'semantic-ui-react'
 import Select from 'react-select'
 
 import AceEditor from 'react-ace'
@@ -12,7 +12,13 @@ import 'brace/mode/xml'
 import 'brace/mode/html'
 import 'brace/mode/plain_text'
 
-import { createApiResponse, updateApiResponse, loadApiResponseList, activeApiResponse } from '../actions'
+import {
+    createApiResponse,
+    updateApiResponse,
+    deleteApiResponse,
+    loadApiResponseList,
+    activeApiResponse
+} from '../actions'
 
 class ResponsePane extends Component {
 
@@ -123,6 +129,13 @@ class ResponsePane extends Component {
         }
     }
 
+    handleDeleteResponse() {
+        if (confirm('Delete this response?')) {
+            this.props.dispatch(deleteApiResponse(this.state.response.id))
+            this.props.dispatch(activeApiResponse(this.newResponse()))
+        }
+    }
+
     newResponse() {
         return {
             name: '',
@@ -226,8 +239,15 @@ class ResponsePane extends Component {
                     />
                 </div>
 
-                <Form.Button onClick={this.handleSaveResponse.bind(this)}
-                             primary type="button" >Save</Form.Button>
+                <div className="group">
+
+                    <Button onClick={this.handleSaveResponse.bind(this)} primary type="button">Save</Button>
+
+                    {response.id
+                        ? <Button basic color="red" type="button"
+                                  onClick={this.handleDeleteResponse.bind(this)}>Delete</Button>
+                        : null}
+                </div>
             </Form>
         )
     }

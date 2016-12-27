@@ -13,6 +13,7 @@ export const LOAD_ACTIVE_API_SPEC = 'LOAD_ACTIVE_API_SPEC'
 
 export const CREATE_API_RESPONSE = 'CREATE_API_RESPONSE'
 export const UPDATE_API_RESPONSE = 'UPDATE_API_RESPONSE'
+export const DELETE_API_RESPONSE = 'DELETE_API_RESPONSE'
 export const LOAD_API_RESPONSE_LIST = 'LOAD_API_RESPONSE_LIST'
 export const ACTIVE_API_RESPONSE = 'ACTIVE_API_RESPONSE'
 
@@ -152,6 +153,10 @@ export function updateApiResponse(data) {
             dispatch(loadApiResponseList(response.request_id))
         })
     )
+}
+
+export function deleteApiResponse(id) {
+
 }
 
 export function loadApiResponseList(requestId) {
