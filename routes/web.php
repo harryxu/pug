@@ -1,10 +1,16 @@
 <?php
 
+use Illuminate\Http\Request;
+
 
 // main page
-Route::get('/', function () {
-    return view('pug');
+Route::get('/', function (Request $request) {
+    return view('pug', ['basePath' => $request->getBasePath()]);
 })->middleware('auth');
+
+Route::get('b/{path}', function (Request $request) {
+    return view('pug', ['basePath' => $request->getBasePath()]);
+})->where('path', '.*')->middleware('auth');
 
 Auth::routes();
 

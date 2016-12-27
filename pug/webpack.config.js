@@ -11,7 +11,7 @@ var isdev = env == 'development';
 
 var plugins = [
     new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor', 'uilib'],
+        names: ['uilib', 'vendor'],
         filename: 'js/[name].'+fileEnv+'.js'
     }),
     new webpack.DefinePlugin({
@@ -82,6 +82,11 @@ var config = {
             ]
             : './src/pug.js',
 
+        uilib: [
+            'semantic-ui-react',
+            'react-ace'
+        ],
+
         vendor: [
             "lodash",
             "react",
@@ -94,11 +99,6 @@ var config = {
             "redux",
             "redux-thunk",
             "whatwg-fetch"
-        ],
-
-        uilib: [
-            'semantic-ui-react',
-            'react-ace'
         ]
     },
 
