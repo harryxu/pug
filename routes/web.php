@@ -27,8 +27,14 @@ Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'au
 });
 
 Route::get('webapi/scripts', function(\Illuminate\Http\Request $request) {
-    $csrfToken = csrf_token();
-    return "var csrfToken = '$csrfToken';";
+    $datavars = [
+        'csrfToken' => csrf_token(),
+        'user' => $request->user()
+    ];
+
+    $json = json_encode($datavars);
+
+    return "var pugConfig = $json";
 });
 
 Route::any('i/{user}/{path}', 'RequestApiController@processRequest')

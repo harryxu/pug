@@ -110,7 +110,7 @@ class ApiRequestPane extends Component {
                     </div>
 
                     <div className="ui message base-path spec-field">
-                        {this.props.globalConfig.baseUrl}/
+                        {this.props.globalConfig.baseUrl}/i/{this.props.globalConfig.user.id}/
                     </div>
 
                     <Input name="path" className="path-input spec-field" placeholder="Request path"

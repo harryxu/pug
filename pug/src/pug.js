@@ -42,7 +42,8 @@ var initState = {
 
     globalConfig: {
         basePath: window.basePath,
-        baseUrl: window.baseUrl
+        baseUrl: window.baseUrl,
+        user: pugConfig.user
     }
 }
 

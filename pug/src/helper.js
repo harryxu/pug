@@ -12,7 +12,7 @@ export function webfetch(input, init) {
     if (method.toUpperCase() != 'GET') {
         if (!init['headers']) {
             init['headers'] = {};
-            init['headers']['X-CSRF-TOKEN'] = window.csrfToken;
+            init['headers']['X-CSRF-TOKEN'] = pugConfig.csrfToken;
         }
     }
 
