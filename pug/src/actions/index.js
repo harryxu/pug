@@ -155,8 +155,15 @@ export function updateApiResponse(data) {
     )
 }
 
-export function deleteApiResponse(id) {
+export function deleteApiResponse(id, requestId) {
+    return (dispatch, getState) => {
 
+        return webfetch(apiUrl(`response/${id}?request_id=${requestId}`), {
+            method: 'delete'
+        })
+            .then(() => dispatch(loadApiResponseList(requestId)))
+
+    }
 }
 
 export function loadApiResponseList(requestId) {

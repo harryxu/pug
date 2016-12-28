@@ -19,15 +19,15 @@ Route::get('logout', 'Auth\LoginController@logout');
 Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'auth'], function() {
 
     Route::resource('group', 'GroupController', [
-        'only' => ['index', 'store', 'update', 'destory'],
+        'only' => ['index', 'store', 'update', 'destroy'],
     ]);
 
     Route::resource('req', 'RequestController',[
-        'only' => ['index', 'show', 'store', 'update', 'destory'],
+        'only' => ['index', 'show', 'store', 'update', 'destroy'],
     ]);
 
     Route::resource('response', 'ResponseController',[
-        'only' => ['index', 'show', 'store', 'update', 'destory'],
+        'only' => ['index', 'show', 'store', 'update', 'destroy'],
     ]);
 
 });

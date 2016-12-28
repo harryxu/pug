@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { Menu, Form, Button, TextArea, Label, Icon } from 'semantic-ui-react'
+import { Menu, Form, Button, TextArea, Label, Icon, Modal } from 'semantic-ui-react'
 import Select from 'react-select'
 
 import AceEditor from 'react-ace'
@@ -57,7 +57,8 @@ class ResponsePane extends Component {
         var response = this.newResponse()
         this.state = {
             response,
-            editorMode: this.findEditorMode(response.content_type)
+            editorMode: this.findEditorMode(response.content_type),
+            deleteModalOpen: false
         }
     }
 
@@ -130,10 +131,9 @@ class ResponsePane extends Component {
     }
 
     handleDeleteResponse() {
-        if (confirm('Delete this response?')) {
-            this.props.dispatch(deleteApiResponse(this.state.response.id))
-            this.props.dispatch(activeApiResponse(this.newResponse()))
-        }
+        this.props.dispatch(deleteApiResponse(this.state.response.id, this.props.request.id))
+        this.props.dispatch(activeApiResponse(this.newResponse()))
+        this.setState({deleteModalOpen: false})
     }
 
     newResponse() {
@@ -183,7 +183,25 @@ class ResponsePane extends Component {
      * Active response editor form.
      */
     renderResponse() {
-        const {response} = this.state
+        const {response, deleteModalOpen} = this.state
+
+        var deleteModal = <Modal open={deleteModalOpen} basic
+            trigger={
+                <Button onClick={() => this.setState({deleteModalOpen:true})}
+                        basic color="red" type="button">Delete</Button>
+            }>
+                <Modal.Content>
+                    <h1>Delete this response, Really?</h1>
+                </Modal.Content>
+
+                <Modal.Actions>
+                    <Button color='red' onClick={this.handleDeleteResponse.bind(this)} inverted>
+                        <Icon name='delete' /> Delete
+                    </Button>
+
+                    <Button onClick={() => this.setState({deleteModalOpen:false})} inverted>Cancel</Button>
+                </Modal.Actions>
+            </Modal>
 
         return (
             <Form className="response-detail" loading={this.props.activeResponse.pending}>
@@ -211,17 +229,13 @@ class ResponsePane extends Component {
                 </Form.Group>
 
                 <Form.Field>
-
                     <label>Match Pattern <Icon name="question circle outline" /> </label>
 
                     <TextArea rows="1" className="match-pattern"
                               name="match_pattern"
                               value={response.match_pattern || ''}
                               onChange={this.handleFieldChange.bind(this)}/>
-
                 </Form.Field>
-
-
 
                 <div className="field">
                     <label>Body</label>
@@ -240,13 +254,8 @@ class ResponsePane extends Component {
                 </div>
 
                 <div className="group">
-
                     <Button onClick={this.handleSaveResponse.bind(this)} primary type="button">Save</Button>
-
-                    {response.id
-                        ? <Button basic color="red" type="button"
-                                  onClick={this.handleDeleteResponse.bind(this)}>Delete</Button>
-                        : null}
+                    {response.id ? deleteModal : null}
                 </div>
             </Form>
         )

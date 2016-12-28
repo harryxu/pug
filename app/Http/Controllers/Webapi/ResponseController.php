@@ -61,4 +61,8 @@ class ResponseController extends Controller
         return $response;
     }
 
+    public function destroy(ApiResponse $response)
+    {
+        return $response->delete();
+    }
 }
