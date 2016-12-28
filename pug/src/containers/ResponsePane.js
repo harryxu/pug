@@ -195,11 +195,10 @@ class ResponsePane extends Component {
                 </Modal.Content>
 
                 <Modal.Actions>
+                    <Button onClick={() => this.setState({deleteModalOpen:false})} inverted>Cancel</Button>
                     <Button color='red' onClick={this.handleDeleteResponse.bind(this)} inverted>
                         <Icon name='delete' /> Delete
                     </Button>
-
-                    <Button onClick={() => this.setState({deleteModalOpen:false})} inverted>Cancel</Button>
                 </Modal.Actions>
             </Modal>
 
