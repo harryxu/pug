@@ -17,7 +17,7 @@ class ApiRequestPane extends Component {
         }
 
 
-        this.verbs = ['GET', 'PUT', 'PATCH', 'DELETE']
+        this.verbs = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
                         .map(v => ({value: v, label: v}));
     }
 
