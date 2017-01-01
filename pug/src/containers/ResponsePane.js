@@ -246,7 +246,7 @@ class ResponsePane extends Component {
                         width="100%"
                         height="150px"
                         tabSize={2}
-                        value={response.headers}
+                        value={response.headers || ''}
                         onChange={headers => this.handleFieldChange({headers})}
                         editorProps={{$blockScrolling: true}}
                     />
@@ -262,7 +262,7 @@ class ResponsePane extends Component {
                         width="100%"
                         height="300px"
                         tabSize={2}
-                        value={response.body}
+                        value={response.body || ''}
                         onChange={body => this.handleFieldChange({body})}
                         editorProps={{$blockScrolling: true}}
                     />
