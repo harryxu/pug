@@ -9,7 +9,8 @@ class ApiResponse extends Model
     protected $table = 'api_response';
 
     protected $fillable = [
-        'name', 'request_id', 'content_type', 'status_code', 'body', 'match_pattern'
+        'name', 'request_id', 'content_type', 'status_code',
+        'headers', 'body', 'match_pattern'
     ];
 
     protected $casts = [

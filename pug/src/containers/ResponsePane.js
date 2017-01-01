@@ -237,6 +237,22 @@ class ResponsePane extends Component {
                 </Form.Field>
 
                 <div className="field">
+                    <label>Headers</label>
+                    <AceEditor
+                        mode="json"
+                        theme="github"
+                        name="headers"
+                        fontSize={15}
+                        width="100%"
+                        height="150px"
+                        tabSize={2}
+                        value={response.headers}
+                        onChange={headers => this.handleFieldChange({headers})}
+                        editorProps={{$blockScrolling: true}}
+                    />
+                </div>
+
+                <div className="field">
                     <label>Body</label>
                     <AceEditor
                         mode={this.state.editorMode}

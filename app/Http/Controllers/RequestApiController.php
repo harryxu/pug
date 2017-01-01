@@ -28,6 +28,19 @@ class RequestApiController extends Controller
             'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE, OPTIONS'
         ];
 
+        try {
+            $settingHeaders = json_decode($resp->headers, true);
+
+            if (is_array($settingHeaders)) {
+                foreach ($settingHeaders as $key => $value) {
+                    if (is_string($value) || is_numeric($value)) {
+                        $headers[$key] = $value;
+                    }
+                }
+            }
+        }
+        catch (\Exception $e) {}
+
         return response($content, $resp->status_code, $headers);
     }
 
