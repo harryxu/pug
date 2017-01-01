@@ -22,8 +22,13 @@ class RequestApiController extends Controller
 
         $content = $this->prepareContent($resp->body, $request);
 
-        return response($content, $resp->status_code)
-                    ->header('Content-Type', $contentType);
+        $headers = [
+            'Content-Type' => $contentType,
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE, OPTIONS'
+        ];
+
+        return response($content, $resp->status_code, $headers);
     }
 
     protected function findApiRequest(User $user, $path, Request $request)
