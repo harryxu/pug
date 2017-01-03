@@ -2,7 +2,9 @@ import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { Menu, Form, Button, TextArea, Label, Icon, Modal } from 'semantic-ui-react'
+import {
+    Menu, Form, Message, Button, TextArea, Accordion, Label, Icon, Modal
+} from 'semantic-ui-react'
 import Select from 'react-select'
 
 import AceEditor from 'react-ace'
@@ -237,18 +239,27 @@ class ResponsePane extends Component {
                 </Form.Field>
 
                 <div className="field">
-                    <label>Headers</label>
-                    <AceEditor
-                        mode="json"
-                        theme="github"
-                        name="headers"
-                        fontSize={15}
-                        width="100%"
-                        height="150px"
-                        tabSize={2}
-                        value={response.headers || ''}
-                        onChange={headers => this.handleFieldChange({headers})}
-                        editorProps={{$blockScrolling: true}}
+                    <Accordion panels={[{
+                            title: 'Headers',
+                            content: <div>
+                                <div className="help">
+                                    Http response headers.
+                                    JSON Object format, key value pair.
+                                </div>
+                                <AceEditor
+                                    mode="json"
+                                    theme="github"
+                                    name="headers"
+                                    fontSize={15}
+                                    width="100%"
+                                    height="150px"
+                                    tabSize={2}
+                                    value={response.headers || ''}
+                                    onChange={v => this.handleFieldChange({v})}
+                                    editorProps={{$blockScrolling: true}}
+                                />
+                                </div>
+                        }]}
                     />
                 </div>
 
