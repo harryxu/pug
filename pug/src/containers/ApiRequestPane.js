@@ -13,7 +13,10 @@ class ApiRequestPane extends Component {
         super(props);
 
         this.state = {
-            spec: this.newSpec()
+            spec: this.newSpec(),
+
+            // Is request spec in editing mode.
+            editing: false
         }
 
 
@@ -35,6 +38,10 @@ class ApiRequestPane extends Component {
         this.setState({
             spec: nextSpec
         })
+
+        if (this.props.spec.pending && !nextProps.spec.pending) {
+            this.setState({editing: false})
+        }
 
         if (nextProps.params.id != this.props.params.id) {
             if (nextProps.params.id) {
@@ -89,7 +96,14 @@ class ApiRequestPane extends Component {
 
     }
 
-    renderSpecSetting() {
+    handleRequestEditClick(event) {
+        event.preventDefault();
+        this.setState({
+            editing: true
+        })
+    }
+
+    renderRequestForm() {
 
         const {spec} = this.state
 
@@ -127,12 +141,35 @@ class ApiRequestPane extends Component {
         )
     }
 
+    renderRequestSummary() {
+        const {spec} = this.state
+
+        return (
+            <div className="api-box request-setting request-summary">
+                <div className="ui message">
+                    <div className="header">
+                        <div className="ui label blue request-method">
+                            {spec.method}
+                        </div>
+
+                        <span className="request-url">
+                        {this.props.globalConfig.baseUrl}/i/{this.props.globalConfig.user.id}/{spec.path}
+                        </span>
+
+                        <a onClick={this.handleRequestEditClick.bind(this)} href="#">Edit</a>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     render() {
+        const {spec, editing} = this.state
         return(
             <div className="api-spec-pane">
-                {this.renderSpecSetting()}
+                { (!spec.id || editing) ? this.renderRequestForm() : this.renderRequestSummary() }
 
-                {this.state.spec.id ? <ResponsePane request={this.state.spec} /> : ''}
+                {spec.id ? <ResponsePane request={this.state.spec} /> : ''}
             </div>
         )
     }

@@ -153,6 +153,13 @@ html {
       height: 36px;
       box-sizing: border-box;
     }
+
+    &.request-summary {
+      .request-url {
+        margin: 0 10px;
+        font-family: monospace;
+      }
+    }
   }
 
   .response-pane {
