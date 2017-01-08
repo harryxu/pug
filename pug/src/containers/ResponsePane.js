@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import {
-    Menu, Form, Message, Button, TextArea, Accordion, Label, Icon, Modal
+    Menu, Form, Button, TextArea, Accordion, Label, Icon, Modal, Popup
 } from 'semantic-ui-react'
 import Select from 'react-select'
 
@@ -204,6 +204,40 @@ class ResponsePane extends Component {
                 </Modal.Actions>
             </Modal>
 
+        var matchPatternHelper =
+            <Popup flowing hoverable positioning='bottom center'
+                   trigger={<Icon name="question circle outline" />}>
+                If regex match your request, this response will be used.
+                <div>
+                    Request will be encoding to a JSON string:
+                    <pre>{`{
+  "querystr":"Query String from $_SERVER['QUERY_STRING']",
+  "raw":"HTTP raw data from php://input",
+  "post":"POST data from $_POST encoding to JSON string"
+}`}</pre>
+                </div>
+                Regex will try to match above JSON string.<br />
+                The actual JSON will be an one line string.
+            </Popup>
+
+
+
+        var headersHelp =
+            <Popup flowing hoverable
+                   trigger={
+                       <div className="help">
+                           Http response headers. JSON Object format, key value pair.
+                       </div>
+                   }>
+                Sample:
+                <pre>{
+                    `{
+    "foo": "bar",
+    "Via": "pug"
+}`
+                }</pre>
+            </Popup>
+
         return (
             <Form className="response-detail" loading={this.props.activeResponse.pending}>
                 <Form.Group widths='equal'>
@@ -230,10 +264,10 @@ class ResponsePane extends Component {
                 </Form.Group>
 
                 <Form.Field>
-                    <label>Match Pattern <Icon name="question circle outline" /> </label>
-
+                    <label>Match Pattern {matchPatternHelper}</label>
                     <TextArea rows="1" className="match-pattern"
                               name="match_pattern"
+                              placeholder="Regex to match request"
                               value={response.match_pattern || ''}
                               onChange={this.handleFieldChange.bind(this)}/>
                 </Form.Field>
@@ -242,10 +276,7 @@ class ResponsePane extends Component {
                     <Accordion panels={[{
                             title: 'Headers',
                             content: <div>
-                                <div className="help">
-                                    Http response headers.
-                                    JSON Object format, key value pair.
-                                </div>
+                                {headersHelp}
                                 <AceEditor
                                     mode="json"
                                     theme="github"
