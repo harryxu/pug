@@ -110,6 +110,7 @@ html {
 
   .request-setting {
     padding: 10px;
+    padding-right: 20px;
     .request-info {
       .spec-field {
         float: left;
@@ -156,7 +157,6 @@ html {
 
     &.request-summary {
       .request-url {
-        margin: 0 10px;
         font-family: monospace;
       }
     }

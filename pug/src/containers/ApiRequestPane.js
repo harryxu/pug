@@ -142,22 +142,26 @@ class ApiRequestPane extends Component {
     }
 
     renderRequestSummary() {
-        const {spec} = this.state
+        const spec = this.state.spec
+        const config = this.props.globalConfig
 
         return (
             <div className="api-box request-setting request-summary">
-                <div className="ui message">
-                    <div className="header">
-                        <div className="ui label blue request-method">
-                            {spec.method}
-                        </div>
-
-                        <span className="request-url">
-                        {this.props.globalConfig.baseUrl}/i/{this.props.globalConfig.user.id}/{spec.path}
-                        </span>
-
-                        <a onClick={this.handleRequestEditClick.bind(this)} href="#">Edit</a>
+                <div className="ui labeled action input  fluid">
+                    <div className="ui label blue request-method">
+                        {spec.method}
                     </div>
+
+                    <input className="request-url" type="text" width="100%" readOnly
+                           value={`${config.baseUrl}/i/${config.user.id}/${spec.path}`} />
+
+                    <button className="ui right icon button">
+                        <i className="copy icon"></i>
+                    </button>
+                    <buttton className="ui button primary" onClick={this.handleRequestEditClick.bind(this)}>
+                        Edit
+                    </buttton>
+
                 </div>
             </div>
         )
