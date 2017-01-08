@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
 import { Form, Input, Button } from 'semantic-ui-react'
+import copy from 'copy-to-clipboard';
+
 
 import ResponsePane from './ResponsePane'
 import { createApiSpec, updateApiSpec, loadActiveApiSpec } from '../actions'
@@ -145,6 +147,8 @@ class ApiRequestPane extends Component {
         const spec = this.state.spec
         const config = this.props.globalConfig
 
+        var url = `${config.baseUrl}/i/${config.user.id}/${spec.path}`
+
         return (
             <div className="api-box request-setting request-summary">
                 <div className="ui labeled action input  fluid">
@@ -152,16 +156,15 @@ class ApiRequestPane extends Component {
                         {spec.method}
                     </div>
 
-                    <input className="request-url" type="text" width="100%" readOnly
-                           value={`${config.baseUrl}/i/${config.user.id}/${spec.path}`} />
+                    <input className="request-url" type="text" readOnly value={url} />
 
-                    <button className="ui right icon button">
+                    <Button icon title="Copy URL" onClick={() => copy(url)}>
                         <i className="copy icon"></i>
-                    </button>
-                    <buttton className="ui button primary" onClick={this.handleRequestEditClick.bind(this)}>
-                        Edit
-                    </buttton>
+                    </Button>
 
+                    <Button primary onClick={this.handleRequestEditClick.bind(this)}>
+                        Edit
+                    </Button>
                 </div>
             </div>
         )
