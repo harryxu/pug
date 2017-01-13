@@ -7,6 +7,8 @@ import {
 } from 'semantic-ui-react'
 import Select from 'react-select'
 
+import Sortable from 'react-sortablejs';
+
 import AceEditor from 'react-ace'
 import 'brace/theme/github'
 import 'brace/mode/json'
@@ -156,17 +158,38 @@ class ResponsePane extends Component {
         this.props.dispatch(activeApiResponse(this.newResponse()))
     }
 
+    handleResponseOrderChange(order, sortable, evt)  {
+
+        console.log(order);
+    }
+
     /**
      * Response list menu.
      */
     renderMenu() {
-        var items = this.props.responseList.responses.map(function(response, i) {
-            return <Menu.Item key={i} active={this.state.response.id == response.id}
-                              name={response.name} content={response.name}
-                              onClick={e => this.handleResponseMenuClick(e, response)}/>
-        }.bind(this))
+        var items = this.props.responseList.responses.map((response, i) => {
+            var classes = ['item']
+            if (this.state.response.id == response.id) {
+                classes.push('active')
+            }
 
-        var menu = items.length > 0 ? <Menu vertical fluid>{items}</Menu> : null
+            return <a key={response.id} data-id={response}
+                      className={classes.join(' ')} name={response.name}
+                      onClick={e => this.handleResponseMenuClick(e, response)}>
+                     {response.name}
+                   </a>
+        })
+
+        var menu = items.length > 0
+            ? <Sortable className="ui vertical pointing menu fluid"
+                        options={{
+                            animation: 150
+                        }}
+                        //onChange={this.handleResponseOrderChange.bind(this)}
+        >
+                    {items}
+              </Sortable>
+            : null
 
         return (
             <div className="response-menu">
