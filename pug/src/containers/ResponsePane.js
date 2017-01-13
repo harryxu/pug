@@ -2,12 +2,8 @@ import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import {
-    Menu, Form, Button, TextArea, Accordion, Label, Icon, Modal, Popup
-} from 'semantic-ui-react'
+import { Form, Button, TextArea, Accordion, Label, Icon, Modal, Popup } from 'semantic-ui-react'
 import Select from 'react-select'
-
-import Sortable from 'react-sortablejs';
 
 import AceEditor from 'react-ace'
 import 'brace/theme/github'
@@ -15,6 +11,8 @@ import 'brace/mode/json'
 import 'brace/mode/xml'
 import 'brace/mode/html'
 import 'brace/mode/plain_text'
+
+import ApiResponseList from '../components/ApiResponseList'
 
 import {
     createApiResponse,
@@ -167,29 +165,6 @@ class ResponsePane extends Component {
      * Response list menu.
      */
     renderMenu() {
-        var items = this.props.responseList.responses.map((response, i) => {
-            var classes = ['item']
-            if (this.state.response.id == response.id) {
-                classes.push('active')
-            }
-
-            return <a key={response.id} data-id={response}
-                      className={classes.join(' ')} name={response.name}
-                      onClick={e => this.handleResponseMenuClick(e, response)}>
-                     {response.name}
-                   </a>
-        })
-
-        var menu = items.length > 0
-            ? <Sortable className="ui vertical pointing menu fluid"
-                        options={{
-                            animation: 150
-                        }}
-                        //onChange={this.handleResponseOrderChange.bind(this)}
-        >
-                    {items}
-              </Sortable>
-            : null
 
         return (
             <div className="response-menu">
@@ -198,8 +173,11 @@ class ResponsePane extends Component {
                           title="Add New Response"
                           onClick={this.handleNewResponseClick.bind(this)}/>
                 </h5>
-
-                {menu}
+                <ApiResponseList
+                    responses={this.props.responseList.responses}
+                    activeResponse={this.state.response}
+                    onChange={this.handleResponseMenuClick.bind(this)}
+                />
             </div>
         )
     }
