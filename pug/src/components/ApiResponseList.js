@@ -36,7 +36,17 @@ export  default class ApiResponseList extends Component {
     }
 
     handleChangeOrder(order, sortable, event) {
+        var oldResponses = this.state.responses
+        var responses = order.map(id => {
+            let index = oldResponses.findIndex(resp => resp.id == id)
+            let response = oldResponses[index]
+            oldResponses.splice(index, 1)
+            return response
+        })
 
+        this.setState({responses})
+
+        this.props.onOrderChange(order, event)
     }
 
     render() {
@@ -56,10 +66,10 @@ export  default class ApiResponseList extends Component {
 
         return (
             <Sortable className="ui vertical pointing menu fluid"
-                        options={{
-                            animation: 150
-                        }}
-                //onChange={this.handleResponseOrderChange.bind(this)}
+                      options={{
+                          animation: 150
+                      }}
+                      onChange={this.handleChangeOrder.bind(this)}
             >
                 {items}
             </Sortable>
