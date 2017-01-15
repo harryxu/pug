@@ -19,7 +19,8 @@ import {
     updateApiResponse,
     deleteApiResponse,
     loadApiResponseList,
-    activeApiResponse
+    activeApiResponse,
+    updateResponseOrder
 } from '../actions'
 
 class ResponsePane extends Component {
@@ -156,16 +157,14 @@ class ResponsePane extends Component {
         this.props.dispatch(activeApiResponse(this.newResponse()))
     }
 
-    handleResponseOrderChange(order, sortable, evt)  {
-
-        console.log(order);
+    handleResponseOrderChange(order, event)  {
+        this.props.dispatch(updateResponseOrder(order, this.props.request.id))
     }
 
     /**
      * Response list menu.
      */
     renderMenu() {
-
         return (
             <div className="response-menu">
                 <h5>Responses
@@ -177,6 +176,7 @@ class ResponsePane extends Component {
                     responses={this.props.responseList.responses}
                     activeResponse={this.state.response}
                     onChange={this.handleResponseMenuClick.bind(this)}
+                    onOrderChange={this.handleResponseOrderChange.bind(this)}
                 />
             </div>
         )

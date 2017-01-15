@@ -29,6 +29,7 @@ Route::group(['prefix' => 'webapi', 'namespace' => 'Webapi', 'middleware' => 'au
     Route::resource('response', 'ResponseController',[
         'only' => ['index', 'show', 'store', 'update', 'destroy'],
     ]);
+    Route::post('response/update-order', 'ResponseController@updateOrder');
 
 });
 

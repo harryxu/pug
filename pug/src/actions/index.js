@@ -205,6 +205,25 @@ export function activeApiResponse(data) {
     }
 }
 
+export function updateResponseOrder(order, requestId) {
+    return (dispatch, getState) => {
+        return webfetch(apiUrl('response/update-order'), {
+            method: 'POST',
+            body: createFormData({
+                'request_id': requestId,
+                order
+            })
+        })
+            .then(response => {
+                return response.json()
+            })
+            .then(respList => {
+                dispatch(receiveApiResponseList(respList))
+
+                return respList
+            })
+    }
+}
 
 /**
  * Call write webapi for common create or update use.

@@ -56,13 +56,34 @@ class ResponseController extends Controller
 
     public function update(ApiResponse $response, Request $request)
     {
-        $response->update($request->except('spec_id'));
+        if ($response->request_id != $this->apiRequest->id) {
+            abort(403, 'Api response not match request id');
+        }
+
+        $response->update($request->except('request_id'));
 
         return $response;
     }
 
     public function destroy(ApiResponse $response)
     {
+        if ($response->request_id != $this->apiRequest->id) {
+            abort(403, 'Api response not match request id');
+        }
+
         return $response->delete();
+    }
+
+    public function updateOrder(Request $request)
+    {
+        $ids = explode(',', $request->get('order'));
+
+        foreach ($ids as $index => $id) {
+            ApiResponse::where('id', $id)
+                ->where('request_id', $this->apiRequest->id)
+                ->update(['order' => $index]);
+        }
+
+        return $this->apiRequest->responses;
     }
 }

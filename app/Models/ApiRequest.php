@@ -15,6 +15,8 @@ class ApiRequest extends Model
 
     public function responses()
     {
-        return $this->hasMany(ApiResponse::class, 'request_id');
+        return $this->hasMany(ApiResponse::class, 'request_id')
+                ->orderBy('order')
+                ->orderBy('created_at');
     }
 }
