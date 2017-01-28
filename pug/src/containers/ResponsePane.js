@@ -8,6 +8,7 @@ import Select from 'react-select'
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/mode/xml/xml'
+import 'codemirror/mode/htmlmixed/htmlmixed'
 
 import ApiResponseList from '../components/ApiResponseList'
 
@@ -23,10 +24,10 @@ import {
 class ResponsePane extends Component {
 
     static contentTypes = [
-        ['application/json', 'javascript'],
+        ['application/json', {name: 'javascript', json: true}],
         ['application/xml', 'xml'],
-        ['text/html', 'xml'],
-        ['text/plain', 'plain_text']
+        ['text/html', 'htmlmixed'],
+        ['text/plain', '']
     ] .map(v => ({value: v[0], label: v[0], mode: v[1]}));
 
     static statusCodes = [
@@ -104,6 +105,9 @@ class ResponsePane extends Component {
         this.setState({editorMode: contentType.mode, response})
     }
 
+    /**
+     * Handle response field change.
+     */
     handleFieldChange(value) {
         var vo = value;
 
@@ -114,7 +118,6 @@ class ResponsePane extends Component {
         this.setState({
             response: Object.assign({}, this.state.response, vo)
         })
-
     }
 
     handleSaveResponse() {
@@ -268,14 +271,16 @@ class ResponsePane extends Component {
                 </Form.Field>
 
                 <div className="field">
-                    <Accordion panels={[{
+                    <Accordion onTitleClick={() => setTimeout(()=>this.refs.headerCM.codeMirror.refresh(), 100) }
+                        panels={[{
                             title: 'Headers',
                             content: <div>
                                 {headersHelp}
                                 <CodeMirror
+                                    ref="headerCM"
                                     name="headers"
                                     value={response.headers || ''}
-                                    onChange={v => this.handleFieldChange({v})}
+                                    onChange={headers => this.handleFieldChange({headers})}
                                     options={{
                                         lineNumbers: true,
                                         mode: 'javascript'

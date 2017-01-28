@@ -200,9 +200,11 @@ html {
     }
   }
 
-  .ace_editor {
+  .CodeMirror {
     border: 1px solid #DDD;
     border-radius: 4px;
+    min-height: 160px;
+    height: auto;
   }
 
 }
