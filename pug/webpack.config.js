@@ -85,13 +85,9 @@ var config = {
 
         uilib: [
             'semantic-ui-react',
-            'react-ace',
-            'brace',
-            'brace/theme/github',
-            'brace/mode/json',
-            'brace/mode/xml',
-            'brace/mode/html',
-            'brace/mode/plain_text'
+            'react-codemirror',
+            'codemirror/mode/javascript/javascript',
+            'codemirror/mode/xml/xml'
         ],
 
         vendor: [

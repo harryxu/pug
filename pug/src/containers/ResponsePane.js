@@ -5,12 +5,9 @@ import { connect } from 'react-redux'
 import { Form, Button, TextArea, Accordion, Label, Icon, Modal, Popup } from 'semantic-ui-react'
 import Select from 'react-select'
 
-import AceEditor from 'react-ace'
-import 'brace/theme/github'
-import 'brace/mode/json'
-import 'brace/mode/xml'
-import 'brace/mode/html'
-import 'brace/mode/plain_text'
+import CodeMirror from 'react-codemirror'
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/mode/xml/xml'
 
 import ApiResponseList from '../components/ApiResponseList'
 
@@ -26,9 +23,9 @@ import {
 class ResponsePane extends Component {
 
     static contentTypes = [
-        ['application/json', 'json'],
+        ['application/json', 'javascript'],
         ['application/xml', 'xml'],
-        ['text/html', 'html'],
+        ['text/html', 'xml'],
         ['text/plain', 'plain_text']
     ] .map(v => ({value: v[0], label: v[0], mode: v[1]}));
 
@@ -83,10 +80,8 @@ class ResponsePane extends Component {
         if (response.id != this.state.response.id) {
             this.setState({
                 response,
-                contentType: {
-                    value: response.content_type,
-                    mode: this.findEditorMode(response.content_type)
-                }
+                contentType: response.content_type,
+                editorMode: this.findEditorMode(response.content_type)
             })
         }
     }
@@ -231,8 +226,7 @@ class ResponsePane extends Component {
                        </div>
                    }>
                 Sample:
-                <pre>{
-                    `{
+                <pre>{`{
     "foo": "bar",
     "Via": "pug"
 }`
@@ -278,36 +272,30 @@ class ResponsePane extends Component {
                             title: 'Headers',
                             content: <div>
                                 {headersHelp}
-                                <AceEditor
-                                    mode="json"
-                                    theme="github"
+                                <CodeMirror
                                     name="headers"
-                                    fontSize={15}
-                                    width="100%"
-                                    height="150px"
-                                    tabSize={2}
                                     value={response.headers || ''}
                                     onChange={v => this.handleFieldChange({v})}
-                                    editorProps={{$blockScrolling: true}}
+                                    options={{
+                                        lineNumbers: true,
+                                        mode: 'javascript'
+                                    }}
                                 />
-                                </div>
+                             </div>
                         }]}
                     />
                 </div>
 
                 <div className="field">
                     <label>Body</label>
-                    <AceEditor
-                        mode={this.state.editorMode}
-                        theme="github"
+                    <CodeMirror
                         name="body"
-                        fontSize={16}
-                        width="100%"
-                        height="300px"
-                        tabSize={2}
                         value={response.body || ''}
                         onChange={body => this.handleFieldChange({body})}
-                        editorProps={{$blockScrolling: true}}
+                        options={{
+                            lineNumbers: true,
+                            mode: this.state.editorMode
+                        }}
                     />
                 </div>
 
