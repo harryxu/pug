@@ -7,6 +7,7 @@
   <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
   <link href="{{asset('css/semantic-ui/semantic.min.css')}}" rel="stylesheet">
   <link href="//cdn.bootcss.com/react-select/1.0.0-rc.2/react-select.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/codemirror/5.23.0/codemirror.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="{{asset('css/style.css')}}">
   <title>Pug</title>

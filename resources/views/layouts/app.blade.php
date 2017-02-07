@@ -12,7 +12,6 @@
 
   @section('style')
     <link href="{{asset('css/semantic-ui/semantic.min.css')}}" rel="stylesheet">
-    <link href="//cdn.bootcss.com/codemirror/5.23.0/codemirror.min.css" rel="stylesheet">
   @show
 
     <script>
