@@ -42,7 +42,7 @@ else {
 var loaders = [
     {
         test: /\.jsx?$/,
-        loaders: isdev ? ['react-hot', 'babel'] : ['babel'],
+        loaders: ['babel'],
         include: path.join(__dirname, 'src'),
         exclude: /node_modules/
     }

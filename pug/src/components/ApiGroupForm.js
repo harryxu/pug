@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
+import { Field, reduxForm } from 'redux-form'
 
 import { Form, Button } from 'semantic-ui-react'
 
-export default class ApiGroupForm extends Component {
+class ApiGroupForm extends Component {
 
     handleSubmit(event, data) {
         event.preventDefault()
@@ -17,14 +18,26 @@ export default class ApiGroupForm extends Component {
         }
     }
 
+    formField(FieldComponent) {
+        return ({input, meta, ...rest}) => (
+            <FieldComponent {...input} {...rest} />
+        )
+    }
+
     render() {
         const {name, desc, id} = this.props.edit || {};
         var idInput = id ? <input type="hidden" name="id" value={id} /> : null
 
         return (
-            <Form loading={this.props.loading} onSubmit={this.handleSubmit.bind(this)}>
-                <Form.Input name="name" defaultValue={name} autoFocus required label="Name" placeholder="Group Name" />
-                <Form.TextArea name="desc" defaultValue={desc} label="Description" placeholder="Description" />
+            <Form loading={this.props.loading}
+                  onSubmit={this.props.handleSubmit}>
+
+                <Field name="name" component={this.formField(Form.Input)}
+                       defaultValue={name} autoFocus required
+                       label="Name" placeholder="Group Name" />
+
+                <Form.TextArea name="desc" defaultValue={desc}
+                               label="Description" placeholder="Description" />
 
                 {idInput}
 
@@ -38,6 +51,8 @@ export default class ApiGroupForm extends Component {
             </Form>
         )
     }
-
-
 }
+
+export default reduxForm({
+    form: 'apiGroupForm'
+})(ApiGroupForm)

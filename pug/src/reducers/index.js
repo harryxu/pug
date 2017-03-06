@@ -1,5 +1,6 @@
 import { routerReducer as routing } from 'react-router-redux'
 import { combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
 
 import * as actions from '../actions'
 
@@ -108,6 +109,8 @@ const rootReducer = combineReducers({
     apiResponses,
 
     globalConfig,
+
+    form: formReducer,
     routing,
 })
 
