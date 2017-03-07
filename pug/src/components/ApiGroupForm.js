@@ -1,16 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, SubmissionError } from 'redux-form'
 
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button, Label } from 'semantic-ui-react'
 
 class ApiGroupForm extends Component {
-
-    handleSubmit(event, data) {
-        event.preventDefault()
-        if (this.props.onSubmit) {
-            this.props.onSubmit(data.formData);
-        }
-    }
 
     handleCancel() {
         if (this.props.onCancel) {
@@ -19,9 +12,16 @@ class ApiGroupForm extends Component {
     }
 
     formField(FieldComponent) {
-        return ({input, meta, ...rest}) => (
-            <FieldComponent {...input} {...rest} />
-        )
+        return ({input, meta, ...rest}) => {
+            return (
+                <Form.Field error={Boolean(meta.touched && meta.error)}>
+                    <label>{rest.label}</label>
+                    <FieldComponent {...input} {...rest} />
+                    {Boolean(meta.touched && meta.error) &&
+                        <Label basic color='red' pointing>{meta.error}</Label>}
+                </Form.Field>
+            )
+        }
     }
 
     render() {
@@ -29,11 +29,10 @@ class ApiGroupForm extends Component {
         var idInput = id ? <input type="hidden" name="id" value={id} /> : null
 
         return (
-            <Form loading={this.props.loading}
-                  onSubmit={this.props.handleSubmit}>
+            <Form loading={this.props.loading} onSubmit={this.props.handleSubmit}>
 
-                <Field name="name" component={this.formField(Form.Input)}
-                       defaultValue={name} autoFocus required
+                <Field name="name" component={this.formField('input')}
+                       defaultValue={name} autoFocus
                        label="Name" placeholder="Group Name" />
 
                 <Form.TextArea name="desc" defaultValue={desc}
@@ -53,6 +52,19 @@ class ApiGroupForm extends Component {
     }
 }
 
+function validate(values) {
+    const errors = {}
+
+    if (!values.name) {
+        errors.name = 'Group Name is required.'
+    }
+
+    return errors;
+}
+
 export default reduxForm({
-    form: 'apiGroupForm'
+    form: 'apiGroupForm',
+    touchOnChange: false,
+    touchOnBlur: false,
+    validate,
 })(ApiGroupForm)
