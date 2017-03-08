@@ -119,10 +119,10 @@ class ApiListPane extends Component {
      */
     handleGroupFormSubmit(data) {
         if (data.id) {
-            this.props.dispatch(updateApiGroup(data))
+            return this.props.dispatch(updateApiGroup(data))
         }
         else {
-            this.props.dispatch(createApiGroup(data))
+            return this.props.dispatch(createApiGroup(data))
         }
     }
 

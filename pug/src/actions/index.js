@@ -2,6 +2,8 @@ import { webfetch, createFormData, path, apiUrl } from '../helper'
 
 import { push } from 'react-router-redux'
 
+import { SubmissionError } from 'redux-form'
+
 export const LOAD_API_GROUPS = 'LOAD_API_GROUPS'
 export const CREATE_API_GROUP = 'CREATE_API_GROUP'
 export const UPDATE_API_GROUP = 'UPDATE_API_GROUP'
@@ -248,6 +250,9 @@ export function commonWrite(path, actionType, data, method='POST', middleware = 
             })
             .then(response => { return response.json() })
             .then(json => {
+                if (json.errors) {
+                    throw new SubmissionError(json.errors)
+                }
                 dispatch({
                     type: actionType,
                     pending: false,

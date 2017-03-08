@@ -5,6 +5,7 @@ namespace Bigecko\Pug\Http\Controllers\Webapi;
 use Bigecko\Pug\Http\Controllers\Controller;
 use Bigecko\Pug\Models\ApiGroup;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class GroupController extends Controller
 {
@@ -17,7 +18,13 @@ class GroupController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required']);
+        $user = $request->user();
+        $this->validate($request, [
+            'name' => [
+                'required',
+                Rule::unique('api_group', 'name')->where('user_id', $user->id)
+            ]
+        ]);
         $group = new ApiGroup($request->all());
         $group->user_id = $request->user()->id;
 

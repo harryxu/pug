@@ -17,19 +17,22 @@ class ApiGroupForm extends Component {
                 <Form.Field error={Boolean(meta.touched && meta.error)}>
                     <label>{rest.label}</label>
                     <FieldComponent {...input} {...rest} />
-                    {Boolean(meta.touched && meta.error) &&
-                        <Label basic color='red' pointing>{meta.error}</Label>}
+                    {meta.touched && meta.error &&
+                        <Label basic color='red' pointing>
+                            {_.isArray(meta.error) ? meta.error.join(' '): meta.error}
+                        </Label>}
                 </Form.Field>
             )
         }
     }
 
     render() {
-        const {name, desc, id} = this.props.edit || {};
+        const { name, desc, id } = this.props.edit || {};
+        const { submitting, handleSubmit } = this.props
         var idInput = id ? <input type="hidden" name="id" value={id} /> : null
 
         return (
-            <Form loading={this.props.loading} onSubmit={this.props.handleSubmit}>
+            <Form loading={submitting} onSubmit={handleSubmit}>
 
                 <Field name="name" component={this.formField('input')}
                        defaultValue={name} autoFocus

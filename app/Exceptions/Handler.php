@@ -5,6 +5,7 @@ namespace Bigecko\Pug\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +45,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($request->segment(1) == 'webapi' && $exception instanceof ValidationException) {
+            $errors = $exception->validator->errors()->getMessages();
+            $data = [
+                'status' => 422,
+                'errors' => $errors
+            ];
+            return response()->json($data, 422);
+        }
+
         return parent::render($request, $exception);
     }
 
